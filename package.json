@@ -1,0 +1,19 @@
+{
+  "name": "gmops",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virtual-committee/GMOps.git"
+  },
+  "author": "Gscienty YuZhongMa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/virtual-committee/GMOps/issues"
+  },
+  "homepage": "https://github.com/virtual-committee/GMOps#readme"
+}

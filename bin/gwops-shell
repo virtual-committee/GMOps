@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+
+require('../src/cli/gwops-shell').bootstrap(process.env, process.argv.slice(1))

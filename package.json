@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/virtual-committee/GMOps/issues"
   },
-  "homepage": "https://github.com/virtual-committee/GMOps#readme"
+  "homepage": "https://github.com/virtual-committee/GMOps#readme",
+  "dependencies": {
+    "shell-quote": "^1.7.2"
+  }
 }

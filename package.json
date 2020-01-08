@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/virtual-committee/GMOps#readme",
   "dependencies": {
+    "kexec": "^3.0.0",
     "shell-quote": "^1.7.2"
   }
 }

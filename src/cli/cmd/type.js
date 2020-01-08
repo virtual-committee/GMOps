@@ -1,5 +1,7 @@
 const SSH_COMMAND_TYPE_NONE = 'none'
 const SSH_COMMAND_TYPE_GIT_RECEIVE_PACK = 'git-receive-pack'
+const SSH_COMMAND_TYPE_GIT_UPLOAD_PACK = 'git-upload-pack'
+
 
 class SpecCommandArg {
     constructor (commandType = SSH_COMMAND_TYPE_NONE, args = [], gwopsCommand = false, ctx) {
@@ -21,6 +23,7 @@ class SpecCommandArg {
 module.exports = {
     SSH_COMMAND_TYPE_NONE,
     SSH_COMMAND_TYPE_GIT_RECEIVE_PACK,
+    SSH_COMMAND_TYPE_GIT_UPLOAD_PACK,
 
     SpecCommandArg
 }

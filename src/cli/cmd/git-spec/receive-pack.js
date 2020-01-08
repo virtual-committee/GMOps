@@ -2,7 +2,7 @@ const {
     SSH_COMMAND_TYPE_GIT_RECEIVE_PACK,
     SpecCommandArg
 } = require('../type')
-const kexec = require('kexec')
+
 
 class GitReceiveSpecCommandArg extends SpecCommandArg {
     constructor (args = [], ctx) {
@@ -17,7 +17,7 @@ class GitReceiveSpecCommandArg extends SpecCommandArg {
     }
 
     exec () {
-        kexec('git', [ 'receive-pack' ].concat(this.args))
+        require('kexec')('git', [ 'receive-pack' ].concat(this.args))
     }
 }
 

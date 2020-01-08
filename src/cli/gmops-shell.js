@@ -4,9 +4,9 @@ const { Context } = require('./cmd/context')
 
 /**
  *
- * 获取gwops-shell命令
- * @param {Object} environment gwops-shell接收的环境变量
- * @param {Array} argv gwops-shell调用参数，主要用于记录用户principal
+ * 获取gmops-shell命令
+ * @param {Object} environment gmops-shell接收的环境变量
+ * @param {Array} argv gmops-shell调用参数，主要用于记录用户principal
  *
  */
 function bootstrap (environment = {}, args = process.argv) {

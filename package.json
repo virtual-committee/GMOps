@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/virtual-committee/GMOps#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "kexec": "^3.0.0",
+    "log4js": "^6.1.0",
     "shell-quote": "^1.7.2"
   }
 }

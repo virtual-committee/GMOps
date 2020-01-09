@@ -6,7 +6,7 @@ const {
 
 class GitReceiveSpecCommandArg extends SpecCommandArg {
     constructor (args = [], ctx) {
-        super(SSH_COMMAND_TYPE_GIT_RECEIVE_PACK, args, ctx)
+        super(SSH_COMMAND_TYPE_GIT_RECEIVE_PACK, args, false, ctx)
     }
 
     valid () {

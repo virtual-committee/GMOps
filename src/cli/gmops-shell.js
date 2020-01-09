@@ -22,6 +22,6 @@ function bootstrap (environment = {}, args = process.argv) {
     cmd.exec()
 }
 
-module.exports = exports = {
+module.exports = {
     bootstrap
 }

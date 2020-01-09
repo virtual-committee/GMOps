@@ -2,6 +2,7 @@ const SSH_COMMAND_TYPE_NONE = 'none'
 const SSH_COMMAND_TYPE_GIT_RECEIVE_PACK = 'git-receive-pack'
 const SSH_COMMAND_TYPE_GIT_UPLOAD_PACK = 'git-upload-pack'
 
+const GMOPS_COMMAND_TYPE_ADD_AUTHORIZED = 'gmops-add-authorized'
 
 class SpecCommandArg {
     constructor (commandType = SSH_COMMAND_TYPE_NONE, args = [], gwopsCommand = false, ctx) {

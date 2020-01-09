@@ -1,0 +1,8 @@
+#!/bin/sh
+
+ssh \
+    -i /home/git/.ssh/id_rsa \
+    -p $GWOPS_PORT \
+    -o StrictHostKeyChecking=no \
+    git@$GWOPS_ADDR \
+    "SSH_ORIGINAL_COMMAND=\"$SSH_ORIGINAL_COMMAND\" /opt/GMOps/bin/gmops-shell $@"

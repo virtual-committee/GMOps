@@ -1,29 +1,23 @@
-const mongoose = require('mongoose')
 const { userModel } = require('../schemas/user')
 
 class Principal {
 	constructor (username) {
 		this.username = username
-		this.loaded = false
-		this.available = false
+		this.exists = false
+		this.synced = false
 	}
 
-	async valid () {
-		if (this.loaded) {
-			return this.available
+	async syncDB () {
+		if (this.synced) {
+			return
 		}
-		if (typeof this.username === 'undefined') {
-			return false
+		const user = await userModel.findOne({ username: this.username })
+		this.exists = !!user
+		if (this.exists) {
+			this.email = user.email
+			this.available = user.available
 		}
-		const res = await userModel.where({ username: this.username }).findOne().map(res => res)
-		this.loaded = true
-		if (!res) {
-			return false
-		}
-		if (!res.available) {
-			return false
-		}
-		return true
+		this.synced = false
 	}
 }
 

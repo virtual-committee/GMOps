@@ -7,6 +7,15 @@ const userSchema = new mongoose.Schema({
     available: Boolean
 })
 
+
+const userAuthorizedKeysSchema = new mongoose.Schema({
+	user: { type: mongoose.ObjectId, ref: 'User' }
+	key: { type: String, required: true, unique: true },
+	writed: { type: Boolean, required: true }
+})
+
+
 module.exports = {
 	userModel: mongoose.model('User', userSchema)
+	userAuthorizedKeysModel: mongoose.model('UserAuthorizedKeys',userAuthorizedKeysSchema)
 }

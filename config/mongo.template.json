@@ -1,0 +1,5 @@
+{
+	"host": "${GMOPS_MONGO_HOST}",
+	"port": ${GMOPS_MONGO_PORT},
+	"database": "${GMOPS_MONGO_DATABASE}"
+}

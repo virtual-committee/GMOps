@@ -5,5 +5,5 @@ module.exports = function (app) {
         format: 'GMOps API server - :method :url :status'
     }))
 
-	require('./user').map(route => app.use('/user', route))
+    require('./user').map(route => app.use('/user', route))
 }

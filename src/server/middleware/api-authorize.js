@@ -1,7 +1,7 @@
 const { apiAuthorize } = require('../business')
 const {
-	validPrincipal,
-	buildPrincipal
+    validPrincipal,
+    buildPrincipal
 } = require('../business')
 
 /**
@@ -13,15 +13,15 @@ const {
  *
  */
 async function authorize (req, res, next) {
-	req.principal = buildPrincipal(req.get('GMOps-Username'))
-	if (await validPrincipal(req.principal)) {
-		next()
-	}
-	else {
-		res.status(401).json({ 'status': 'Unauthorized' })
-	}
+    req.principal = buildPrincipal(req.get('GMOps-Username'))
+    if (await validPrincipal(req.principal)) {
+        next()
+    }
+    else {
+        res.status(401).json({ 'status': 'Unauthorized' })
+    }
 }
 
 module.exports = {
-	authorize
+    authorize
 }

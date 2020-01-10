@@ -8,12 +8,12 @@ const { Principal } = require('../models/principal')
  *
  */
 async function validPrincipal (principal) {
-	await principal.syncDB()
-	if (!principal.exists) {
-		console.log('here')
-		return false
-	}
-	return principal.available
+    await principal.syncDB()
+    if (!principal.exists) {
+        console.log('here')
+        return false
+    }
+    return principal.available
 }
 
 /**
@@ -24,10 +24,10 @@ async function validPrincipal (principal) {
  *
  */
 function buildPrincipal (username) {
-	return new Principal(username)
+    return new Principal(username)
 }
 
 module.exports = {
-	validPrincipal,
-	buildPrincipal
+    validPrincipal,
+    buildPrincipal
 }

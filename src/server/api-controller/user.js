@@ -1,7 +1,8 @@
 const {
-	validUserInfo,
-	addUser
+    validUserInfo,
+    addUser
 } = require('../business/user')
+const { User } = require('../models')
 
 /**
  *
@@ -10,10 +11,19 @@ const {
  * @param {Response} res 响应体
  *
  */
-function userInfoAction ({ principal }, res) {
-	res.send({
-		'username': principal.username
-	}).end()
+async function getUserInfoAction ({ principal }, res) {
+    const user = new User(principal)
+    await user.load()
+    if (!user.approved) {
+        res.status(404).json({ 'reason': 'the user dose not exist' }).end()
+    }
+    else {
+        res.json({
+            'username': user.username,
+            'email': user.email,
+            'available': user.available
+        }).end()
+    }
 }
 
 /**
@@ -24,20 +34,21 @@ function userInfoAction ({ principal }, res) {
  *
  */
 async function userRegisterAction (req, res) {
-	const validResult = await validUserInfo(req.body)
-	if (!validResult.result) {
-		const { status, message } = validResult
-		res.status(status).json(message).end()
-	}
-	// TODO 对password进行加密/哈希处理
-	if (!addUser(req.body)) {
-		res.status(500).json({ 'status': 'Server Internal Error' }).end()
-		return
-	}
-	res.status(201).json({ 'status': 'created' }).end()
+    const user = new User(req.body)
+    const validResult = await validUserInfo(user)
+    if (!validResult.result) {
+        const { status, message } = validResult
+        res.status(status).json(message).end()
+        return
+    }
+    if (!addUser(user)) {
+        res.status(500).json({ 'status': 'Server Internal Error' }).end()
+        return
+    }
+    res.status(201).json({ 'status': 'created' }).end()
 }
 
 module.exports = {
-	userInfoAction,
-	userRegisterAction
+    getUserInfoAction,
+    userRegisterAction
 }

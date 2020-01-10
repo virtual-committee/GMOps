@@ -1,6 +1,10 @@
+const { apiAuthorize } = require('../business')
+
+
 module.exports = function (req, res, next) {
-    if (typeof req.get('GMOps-Username') === 'undefined') {
+    if (!apiAuthorize(req)) {
         res.status(401).send('Unauthorized')
+        return
     }
     next()
 }

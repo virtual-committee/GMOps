@@ -55,7 +55,7 @@ function addUser (user) {
 /**
  *
  * 获取用户的全部authorized_keys
- * @param {User} user 用户实体
+ * @param {AuthorizdKey} authorizedKey
  * @return {List} authorized_keys
  *
  */
@@ -65,20 +65,56 @@ async function getUserAuthorizedKeys (user) {
 
 /**
  *
- * 添加一个authorized_key
- * @param {User} user 用户实体
- * @param {String} title
- * @param {String} authorizedKey
- * @return {String} id
+ * 验证AuthorizedKey合法性
+ * @param {AuthorizedKey} authorizedKey
+ * @result {Object} 
  *
  */
-async function createUserAuthorizedKey (user, title, authorizedKey) {
-    return await user.createAuthorizedKey(title, authorizedKey)
+async function validUserAuthorizedKey (authorizedKey) {
+    if (!authorizedKey.user.approved) {
+        return {
+            'result': false,
+            'status': 404,
+            'message': {
+                'reason': 'user dose not exist'
+            }
+        }
+    }
+    if (await authorizedKey.exists()) {
+        return {
+            'result': false,
+            'status': 409,
+            'message': {
+                'reason': 'authorized_key already used'
+            }
+        }
+    }
+    return {
+        'result': true
+    }
+}
+
+/**
+ *
+ * 添加一个authorized_key
+ * @param {AuthorizeKey} authorizedKey
+ * @return {Object} 执行状态
+ *
+ */
+async function createUserAuthorizedKey (authorizedKey) {
+    await authorizedKey.create()
+    return {
+        'status': 201,
+        'message': {
+            'id': authorizedKey._id
+        }
+    }
 }
 
 module.exports = {
     validUserInfo,
     addUser,
     getUserAuthorizedKeys,
+    validUserAuthorizedKey,
     createUserAuthorizedKey
 }

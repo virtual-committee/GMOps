@@ -12,7 +12,7 @@ class Principal {
         if (this.synced) {
             return
         }
-        const userDoc = await userModel.findOne({ 'username': this.username })
+        const userDoc = await userModel.findOne({ username: this.username })
         this.exists = !!userDoc
         if (this.exists) {
             this.available = userDoc.available

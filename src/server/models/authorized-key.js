@@ -6,7 +6,7 @@ const {
 const { User } = require('./user')
 
 class AuthorizedKey {
-    constructor ({ _id, user, title, authorizedKey, writed = false }) {
+    constructor ({ _id = new mongoose.Types.ObjectId(), user, title, authorizedKey, writed = false }) {
         this._id = _id
         this.user = user
         this.title = title
@@ -23,7 +23,7 @@ class AuthorizedKey {
         if (typeof this._id === 'undefined') {
             return false
         }
-        const { user, authorizedKey, writed } = await userAuthorizedKeysModel.findOne({ '_id': this._id }).populate('user')
+        const { user, authorizedKey, writed } = await userAuthorizedKeysModel.findOne({ _id: this._id }).populate('user')
         this.user = user
         this.authorizedKey = authorizedKey
         this.writed = writed
@@ -36,12 +36,11 @@ class AuthorizedKey {
      * 
      */
     async create () {
-        this._id = new mongoose.Types.ObjectId()
         const key = await userAuthorizedKeysModel.create({
-            '_id': this._id,
-            'user': this.user._id,
-            'authorizedKey': this.authorizedKey,
-            'writed': this.writed
+            _id: this._id,
+            user: this.user._id,
+            authorizedKey: this.authorizedKey,
+            writed: this.writed
         })
         await this.load()
     }

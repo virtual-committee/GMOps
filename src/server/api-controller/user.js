@@ -2,9 +2,10 @@ const {
     validUserInfo,
     addUser,
     getUserAuthorizedKeys,
+    validUserAuthorizedKey,
     createUserAuthorizedKey
 } = require('../business/user')
-const { User } = require('../models')
+const { User, AuthorizedKey } = require('../models')
 
 /**
  *
@@ -37,13 +38,13 @@ async function getUserInfoAction ({ principal }, res) {
  *
  */
 async function userRegisterAction (req, res) {
-    const info = {
+    const entity = {
         'username': req.body.username,
         'email': req.body.email,
         'userPassword': req.body.password,
     }
-    const user = new User(info)
-    const validResult = await validUserInfo(user)
+    const user = new User(entity)
+    const validResult = await validUserInfo(entity)
     if (!validResult.result) {
         const { status, message } = validResult
         res.status(status).json(message).end()
@@ -64,16 +65,22 @@ async function userRegisterAction (req, res) {
  *
  */
 async function createUserAuthorizedKeyAction (req, res) {
-    // TODO 检查 authorize_key 是否存在
     const user = new User(req.principal)
     await user.load()
-    const id = await createUserAuthorizedKey(user,
-        req.body.title,
-        req.body.authorized_key)
-    res.status(201).json({
-        "status": 'created',
-        'id': id
-    }).end()
+    const entity = {
+        'user': user,
+        'title': req.body.title,
+        'authorizedKey': req.body.authorized_key
+    }
+    const authorizedKey = new AuthorizedKey(entity)
+    const validResult = await validUserAuthorizedKey(authorizedKey)
+    if (!validResult.result) {
+        const { status, message } = validResult
+        res.status(status).json(message).end()
+        return
+    }
+    const ret = await createUserAuthorizedKey(authorizedKey)
+    res.status(ret.status).json(ret.message).end()
 }
 
 module.exports = {

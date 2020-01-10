@@ -8,7 +8,7 @@ const { AuthorizedKey } = require('./authorized-key')
 const mongoose = require('mongoose')
 
 class User {
-    constructor ({ _id, username, email, userPassword, password, available = true }) {
+    constructor ({ _id = new mongoose.Types.ObjectId(), username, email, userPassword, password, available = true }) {
         this.approved = [
             username,
             email,
@@ -59,9 +59,9 @@ class User {
             return false
         }
         return await userModel.exists({
-            '$or': [
-                { 'username': this.username },
-                { 'email': this.email }
+            $or: [
+                { username: this.username },
+                { email: this.email }
             ]
         })
     }
@@ -72,10 +72,11 @@ class User {
      */
     create () {
         return userModel.create({
-            'username': this.username,
-            'password': this.password,
-            'email': this.email,
-            'available': this.available
+            _id: this._id,
+            username: this.username,
+            password: this.password,
+            email: this.email,
+            available: this.available
         })
     }
 
@@ -85,8 +86,9 @@ class User {
      *
      */
     async load () {
-        if (await userModel.exists({ 'username': this.username })) {
-            const { _id, username, password, email, available } = await userModel.findOne({ 'username': this.username })
+        this.approved = false
+        if (await userModel.exists({ username: this.username })) {
+            const { _id, username, password, email, available } = await userModel.findOne({ username: this.username })
             this._id = _id
             this.username = username
             this._hashedPassword = password
@@ -99,31 +101,14 @@ class User {
     /**
      *
      * 获取当前用户下的全部authorized_keys
+     * @return {List} authorized_keys
      *
      */
     async getAuthorizedKeys () {
         return await userAuthorizedKeysModel.
-            find({ 'user': this._id }).
+            find({ user: this._id }).
             populate('user').
             map(res => res.map(item => new AuthorizedKey(item)))
-    }
-
-    /**
-     *
-     * 添加一个新的authorized_key
-     * @param {String} title authorized_key标识
-     * @param {String} authorizedKey authorized_key
-     * @return {String} 创建成功后 authorized_key的ID
-     *
-     */
-    async createAuthorizedKey (title, authorizedKey) {
-        const key = new AuthorizedKey({
-            'user': this,
-            title,
-            authorizedKey
-        })
-        await key.create()
-        return key._id
     }
 }
 

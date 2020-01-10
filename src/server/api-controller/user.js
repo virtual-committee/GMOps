@@ -1,6 +1,8 @@
 const {
     validUserInfo,
-    addUser
+    addUser,
+    getUserAuthorizedKeys,
+    createUserAuthorizedKey
 } = require('../business/user')
 const { User } = require('../models')
 
@@ -21,7 +23,8 @@ async function getUserInfoAction ({ principal }, res) {
         res.json({
             'username': user.username,
             'email': user.email,
-            'available': user.available
+            'available': user.available,
+            'authorized_keys': await getUserAuthorizedKeys(user)
         }).end()
     }
 }
@@ -34,7 +37,12 @@ async function getUserInfoAction ({ principal }, res) {
  *
  */
 async function userRegisterAction (req, res) {
-    const user = new User(req.body)
+    const info = {
+        'username': req.body.username,
+        'email': req.body.email,
+        'userPassword': req.body.password,
+    }
+    const user = new User(info)
     const validResult = await validUserInfo(user)
     if (!validResult.result) {
         const { status, message } = validResult
@@ -48,7 +56,28 @@ async function userRegisterAction (req, res) {
     res.status(201).json({ 'status': 'created' }).end()
 }
 
+/**
+ *
+ * 添加authorized_key
+ * @param {Request} req
+ * @param {Response} res
+ *
+ */
+async function createUserAuthorizedKeyAction (req, res) {
+    // TODO 检查 authorize_key 是否存在
+    const user = new User(req.principal)
+    await user.load()
+    const id = await createUserAuthorizedKey(user,
+        req.body.title,
+        req.body.authorized_key)
+    res.status(201).json({
+        "status": 'created',
+        'id': id
+    }).end()
+}
+
 module.exports = {
     getUserInfoAction,
-    userRegisterAction
+    userRegisterAction,
+    createUserAuthorizedKeyAction
 }

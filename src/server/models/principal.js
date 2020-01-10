@@ -1,4 +1,4 @@
-const { userModel } = require('../schemas/user')
+const { userModel } = require('../schemas')
 
 class Principal {
     constructor (username) {
@@ -14,7 +14,9 @@ class Principal {
         }
         const userDoc = await userModel.findOne({ 'username': this.username })
         this.exists = !!userDoc
-        this.available = userDoc.available
+        if (this.exists) {
+            this.available = userDoc.available
+        }
         this.synced = true
     }
 }

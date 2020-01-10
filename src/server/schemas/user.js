@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
     username: { type: String, required: true, unique: true },
     password: String,
     email: { type: String, required: true, unique: true },
@@ -9,7 +10,9 @@ const userSchema = new mongoose.Schema({
 
 
 const userAuthorizedKeysSchema = new mongoose.Schema({
-    user: { type: mongoose.ObjectId, ref: 'User' },
+    _id: mongoose.Schema.Types.ObjectId,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', unique: false },
+    title: { type: String, require: true },
     authorizedKey: { type: String, required: true, unique: true },
     writed: { type: Boolean, required: true }
 })

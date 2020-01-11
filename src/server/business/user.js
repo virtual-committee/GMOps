@@ -1,5 +1,3 @@
-const { userModel } = require('../schemas')
-
 /**
  *
  * 用户注册信息校验

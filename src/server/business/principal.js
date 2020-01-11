@@ -1,4 +1,4 @@
-const { Principal } = require('../models/principal')
+const { Principal } = require('../models')
 
 /**
  *

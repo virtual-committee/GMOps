@@ -15,8 +15,13 @@ const logger = log4js.getLogger('system')
 apiRouteStuffing(api)
 webRouteStuffing(web)
 
+// 运行api server
+if (!fs.existsSync('./config/global.json')) {
+    logger.error('cannot find config/global.json')
+    process.exit(1)
+}
 // 运行web server
-logger.info('GMOps web server listening at \'http://0.0.0.0:8080\'')
+logger.info('GMOps web server listening at \'http://0.0.0.0:' + require('../../config/global.json').web_port + '\'')
 web.listen(8080)
 
 

@@ -12,21 +12,33 @@ class AuthorizedKey {
         this.title = title
         this.authorizedKey = authorizedKey
         this.writed = writed
+        this.approved = !!authorizedKey
+    }
+
+    _sync ({ user, title, authorizedKey, writed }) {
+        this.user = user
+        this.title = title
+        this.authorizedKey = authorizedKey
+        this.writed = writed
+        this.approved = true
     }
 
     /**
      *
      * 从数据库中加载authorized_key
+     * @return {Boolean} 加载是否成功
      *
      */
     async load () {
+        this.approved = false
         if (typeof this._id === 'undefined') {
             return false
         }
-        const { user, authorizedKey, writed } = await userAuthorizedKeysModel.findOne({ _id: this._id }).populate('user')
-        this.user = user
-        this.authorizedKey = authorizedKey
-        this.writed = writed
+        if (!await userAuthorizedKeysModel.exists({ _id: this._id })) {
+            return false
+        }
+        this._sync(await userAuthorizedKeysModel.findOne({ _id: this._id }).populate('user'))
+        return true
     }
 
     /**
@@ -53,6 +65,17 @@ class AuthorizedKey {
      */
     async exists () {
         return await userAuthorizedKeysModel.exists({ authorizedKey: this.authorizedKey })
+    }
+
+    /**
+     *
+     * 标记为写入状态
+     *
+     */
+    async markWrite () {
+        let obj = await userAuthorizedKeysModel.findOne({ _id: this._id })
+        obj.writed = true
+        this._sync(await obj.save())
     }
 }
 

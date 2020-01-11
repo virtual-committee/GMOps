@@ -6,4 +6,5 @@ module.exports = function (app) {
     }))
 
     require('./user').map(route => app.use('/user', route))
+    require('./authorized-key').map(route => app.use('/authorized-key', route))
 }

@@ -1,4 +1,5 @@
 module.exports = {
     ...require('./principal'),
-    ...require('./user')
+    ...require('./user'),
+    ...require('./authorize-key')
 }

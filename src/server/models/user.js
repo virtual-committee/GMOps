@@ -107,7 +107,6 @@ class User {
     async getAuthorizedKeys () {
         return await userAuthorizedKeysModel.
             find({ user: this._id }).
-            populate('user').
             map(res => res.map(item => new AuthorizedKey(item)))
     }
 }

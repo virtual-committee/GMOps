@@ -22,6 +22,8 @@
     "kexec": "^3.0.0",
     "log4js": "^6.1.0",
     "mongoose": "^5.8.6",
+    "monq": "^0.3.7",
+    "node-libcurl": "^2.0.3",
     "shell-quote": "^1.7.2"
   }
 }

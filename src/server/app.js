@@ -4,6 +4,8 @@ const log4js = require('log4js')
 const apiRouteStuffing = require('./routes/api')
 const webRouteStuffing = require('./routes/web')
 const mongoose = require('mongoose')
+const { queueInit } = require('./queue')
+
 
 const api = express()
 const web = express()
@@ -51,3 +53,5 @@ mongoose.connect(`mongodb://${mongoConfig.host}:${mongoConfig.port}/${mongoConfi
     })
 })
 
+// 运行任务队列
+queueInit(mongoConfig)

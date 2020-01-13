@@ -4,7 +4,7 @@ const {
     getUserAuthorizedKeys,
     validUserAuthorizedKey,
     createUserAuthorizedKey
-} = require('../business/user')
+} = require('../business')
 const { User, AuthorizedKey } = require('../models')
 
 /**

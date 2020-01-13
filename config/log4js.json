@@ -23,6 +23,12 @@
             ],
             "level": "all"
         },
+        "queue": {
+            "appenders": [
+                "console"
+            ],
+            "level": "all"
+        },
         "system": {
             "appenders": [
                 "console"

@@ -154,14 +154,6 @@ async function validAuthorizedKeyApplied (authorizedKey) {
             }
         }
     }
-    if (!authorizedKey.writed) {
-        return {
-            'applied': false,
-            'message': {
-                'reason': 'authorized_key dose not writed'
-            }
-        }
-    }
     const findLineNumberRet = findAuthorizedKeyLineNumber(authorizedKey._id)
     if (!findLineNumberRet.result) {
         return {
@@ -206,8 +198,26 @@ async function cancelAuthorizedKey (authorizedKey) {
     }
 }
 
+async function fastCancelAuthorizedKey (authorizedKey) {
+    await authorizedKey.load()
+    if (!authorizedKey.approved) {
+        return {
+            'result': false,
+            'message': {
+                'reason': 'authorized_key dose not exist'
+            }
+        }
+    }
+    authorizedKey.writed = false
+    authorizedKey.save()
+    return {
+        'result': true
+    }
+}
+
 module.exports = {
     validAuthorizedKey,
     applyAuthorizedKey,
-    cancelAuthorizedKey
+    cancelAuthorizedKey,
+    fastCancelAuthorizedKey
 }

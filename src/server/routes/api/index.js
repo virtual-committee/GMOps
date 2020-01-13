@@ -5,6 +5,6 @@ module.exports = function (app) {
         format: 'GMOps API server - :method :url :status'
     }))
 
-    require('./user').map(route => app.use('/user', route))
-    require('./authorized-key').map(route => app.use('/authorized-key', route))
+    require('./user').forEach(route => app.use('/user', route))
+    require('./authorized-key').forEach(route => app.use('/authorized-key', route))
 }

@@ -13,12 +13,12 @@ const jqClient = monq(`mongodb://${config.host}:${config.port}/${config.database
  *
  */
 async function queueInit (config) {
-    const worker = jqClient.worker(['gmops-queue-api'], { collection: config.job_collection })
-
-    worker.register({
-    })
-
     await (async function () {
+        const worker = jqClient.worker(['gmops-queue-api'], { collection: config.job_collection })
+
+        worker.register({
+            ...require('./authorized-key')
+        })
         logger.info('start running task queue')
         worker.start()
     })()

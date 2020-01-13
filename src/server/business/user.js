@@ -69,6 +69,15 @@ async function getUserAuthorizedKeys (user) {
  *
  */
 async function validUserAuthorizedKey (authorizedKey) {
+    if (!authorizedKey.approved) {
+        return {
+            'result': false,
+            'status': 400,
+            'message': {
+                'reason': 'missing authorized_key field'
+            }
+        }
+    }
     if (!authorizedKey.user.approved) {
         return {
             'result': false,
@@ -95,7 +104,7 @@ async function validUserAuthorizedKey (authorizedKey) {
 /**
  *
  * 添加一个authorized_key
- * @param {AuthorizeKey} authorizedKey
+ * @param {AuthorizedKey} authorizedKey
  * @return {Object} 执行状态
  *
  */

@@ -72,9 +72,11 @@ class AuthorizedKey {
      * 标记为写入状态
      *
      */
-    async markWrite () {
+    async save () {
         let obj = await userAuthorizedKeysModel.findOne({ _id: this._id })
-        obj.writed = true
+        obj.title = this.title
+        obj.authorizedKey = this.authorizedKey
+        obj.writed = this.writed
         this._sync(await obj.save())
     }
 }

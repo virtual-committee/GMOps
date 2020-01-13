@@ -72,6 +72,7 @@ async function createUserAuthorizedKeyAction (req, res) {
         'title': req.body.title,
         'authorizedKey': req.body.authorized_key
     }
+    console.log(req.body)
     const authorizedKey = new AuthorizedKey(entity)
     const validResult = await validUserAuthorizedKey(authorizedKey)
     if (!validResult.result) {

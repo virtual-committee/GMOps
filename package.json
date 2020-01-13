@@ -23,7 +23,9 @@
     "log4js": "^6.1.0",
     "mongoose": "^5.8.6",
     "monq": "^0.3.7",
+    "n-readlines": "^1.0.0",
     "node-libcurl": "^2.0.3",
-    "shell-quote": "^1.7.2"
+    "shell-quote": "^1.7.2",
+    "shelljs": "^0.8.3"
   }
 }

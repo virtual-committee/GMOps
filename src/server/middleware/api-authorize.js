@@ -1,8 +1,8 @@
-const { apiAuthorize } = require('../business')
 const {
+    apiAuthorize,
     validPrincipal,
     buildPrincipal
-} = require('../business')
+} = require('../api-business')
 
 /**
  *

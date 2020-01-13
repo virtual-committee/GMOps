@@ -4,7 +4,7 @@ const {
     applyAuthorizedKey,
     cancelAuthorizedKey,
     fastCancelAuthorizedKey
-} = require('../business')
+} = require('../api-business')
 
 /**
  *

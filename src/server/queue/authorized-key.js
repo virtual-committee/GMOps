@@ -49,6 +49,45 @@ function applyAuthorizedKeyTask ({ id }, cb) {
     curl.perform()
 }
 
+function cancelAuthorizedKeyTask ({ id }, cb) {
+    logger.info('processing cancel authorized_key, id: ' + id)
+
+    curl.setOpt(Curl.option.URL, '127,0.0.1/authorized-key/' + id + '/cancel')
+    curl.setOpt(Curl.option.HTTPPOST, [])
+    curl.setOpt(Curl.option.UNIX_SOCKET_PATH, '/var/run/gmops.sock')
+
+    curl.on('end', function (statusCode, data, headers) {
+        if (statusCode === 202) {
+            cb(null, {
+                'status': 'success',
+                'task': 'cancel authorized_key',
+                'param': {
+                    'id': id
+                }
+            })
+            logger.info('success cancel authorized_key, id: ' + id)
+        }
+        else {
+            logger.info('failured cancel authorized_key, id: ' + id)
+            cb({
+                'status_code': statusCode,
+                'body': data
+            }, {
+                'status': 'failured',
+                'task': 'cancel authorized_key',
+                'param': {
+                    'id': id
+                }
+            })
+        }
+        this.close()
+    })
+
+    curl.on('error', curl.close.bind(curl))
+    curl.perform()
+}
+
 module.exports = {
-    applyAuthorizedKeyTask
+    applyAuthorizedKeyTask,
+    cancelAuthorizedKeyTask
 }

@@ -1,10 +1,12 @@
 const {
     userModel,
-    userAuthorizedKeysModel
+    userAuthorizedKeysModel,
+    userRepoModel
 } = require('../schemas')
 const crypto = require('crypto')
 const hash = crypto.createHash('sha256')
 const { AuthorizedKey } = require('./authorized-key')
+const { Repo } = require('./repo')
 const mongoose = require('mongoose')
 
 class User {
@@ -44,8 +46,17 @@ class User {
         }
     }
 
+    _sync ({ _id, username, password, email, available }) {
+        this._id = _id
+        this.username = username
+        this._hashedPassword = password
+        this.email = email
+        this.available = available
+        this.approved = true
+    }
+
     valid () {
-        // 对 username/email/password进行验证
+        // TODO 对 username/email/password进行验证
         return true
     }
 
@@ -88,13 +99,7 @@ class User {
     async load () {
         this.approved = false
         if (await userModel.exists({ username: this.username })) {
-            const { _id, username, password, email, available } = await userModel.findOne({ username: this.username })
-            this._id = _id
-            this.username = username
-            this._hashedPassword = password
-            this.email = email
-            this.available = available
-            this.approved = true
+            this._sync(await userModel.findOne({ username: this.username }))
         }
     }
 
@@ -108,6 +113,23 @@ class User {
         return await userAuthorizedKeysModel.
             find({ user: this._id }).
             map(res => res.map(item => new AuthorizedKey(item)))
+    }
+
+    /**
+     *
+     * 获取当前用户下的全部Repo
+     * @return {List} Repos
+     *
+     */
+    async getRepos () {
+        return await userRepoModel.
+            find({ user: this._id }).
+            populate('repo').
+            map(res => res.map(({ repo }) => {
+                const ret = new Repo(repo)
+                ret.user = this
+                return ret
+            }))
     }
 }
 

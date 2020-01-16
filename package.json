@@ -25,6 +25,7 @@
     "monq": "^0.3.7",
     "n-readlines": "^1.0.0",
     "node-libcurl": "^2.0.3",
+    "nodegit": "^0.26.4",
     "shell-quote": "^1.7.2",
     "shelljs": "^0.8.3"
   },

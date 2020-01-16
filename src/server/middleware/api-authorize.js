@@ -3,6 +3,7 @@ const {
     validPrincipal,
     buildPrincipal
 } = require('../api-business')
+const { User } = require('../models')
 
 /**
  *
@@ -13,9 +14,16 @@ const {
  *
  */
 async function authorize (req, res, next) {
-    req.principal = buildPrincipal(req.get('GMOps-Username'))
-    if (await validPrincipal(req.principal)) {
-        next()
+    const principal = buildPrincipal(req.get('GMOps-Username'))
+    if (await validPrincipal(principal)) {
+        req.user = new User(principal)
+        await req.user.load()
+        if (!req.user.approved) {
+            res.status(404).json({ 'reason': 'the user dose not exist' }).end()
+        }
+        else {
+            next()
+        }
     }
     else {
         res.status(401).json({ 'status': 'Unauthorized' })

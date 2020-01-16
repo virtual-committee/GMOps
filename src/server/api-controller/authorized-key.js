@@ -8,6 +8,30 @@ const {
 
 /**
  *
+ * 添加authorized_key
+ * @param {Request} req
+ * @param {Response} res
+ *
+ */
+async function createUserAuthorizedKeyAction ({ user }, res) {
+    const entity = {
+        'user': user,
+        'title': req.body.title,
+        'authorizedKey': req.body.authorized_key
+    }
+    const authorizedKey = new AuthorizedKey(entity)
+    const validResult = await validUserAuthorizedKey(authorizedKey)
+    if (!validResult.result) {
+        const { status, message } = validResult
+        res.status(status).json(message).end()
+        return
+    }
+    const ret = await createUserAuthorizedKey(authorizedKey)
+    res.status(ret.status).json(ret.message).end()
+}
+
+/**
+ *
  * 将authorized_key写入到authorized_keys文件中
  * @param {String} id
  * @param {Response} res
@@ -66,5 +90,6 @@ async function fastCancelAuthorizedKeyAction ({ params: { id } }, res) {
 module.exports = {
     applyAuthorizedKeyAction,
     cancelAuthorizedKeyAction,
-    fastCancelAuthorizedKeyAction
+    fastCancelAuthorizedKeyAction,
+    createUserAuthorizedKeyAction
 }

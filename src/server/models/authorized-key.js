@@ -15,7 +15,8 @@ class AuthorizedKey {
         this.approved = !!authorizedKey
     }
 
-    _sync ({ user, title, authorizedKey, writed }) {
+    _sync ({ _id, user, title, authorizedKey, writed }) {
+        this._id = _id
         this.user = user
         this.title = title
         this.authorizedKey = authorizedKey
@@ -48,7 +49,7 @@ class AuthorizedKey {
      * 
      */
     async create () {
-        const key = await userAuthorizedKeysModel.create({
+        await userAuthorizedKeysModel.create({
             _id: this._id,
             user: this.user._id,
             authorizedKey: this.authorizedKey,

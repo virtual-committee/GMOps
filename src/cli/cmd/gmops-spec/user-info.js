@@ -5,6 +5,7 @@ const {
 } = require('../type')
 const { Curl } = require('node-libcurl')
 const { authorize } = require('../authorize')
+const jsome = require('jsome')
 
 
 class GMOpsUserInfoSpecCommandArg extends SpecCommandArg {
@@ -29,7 +30,7 @@ class GMOpsUserInfoSpecCommandArg extends SpecCommandArg {
             curl.setOpt(Curl.option.HTTPHEADER, ['GMOps-Username: ' + this.ctx.args[1].replace(/^'/, '').replace(/'$/, '')])
             curl.on('end', function (statusCode, data, headers) {
                 data = JSON.parse(data)
-                console.log(data)
+                jsome(data)
             })
 
             curl.on('error', curl.close.bind(curl))

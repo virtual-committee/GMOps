@@ -1,13 +1,11 @@
+const { SpecCommandArg } = require('./type')
 const {
-    SSH_COMMAND_TYPE_NONE,
-    SSH_COMMAND_TYPE_GIT_RECEIVE_PACK,
-
-    SpecCommandArg
-} = require('./type')
-const {
-    GitReceiveSpecCommandArg,
+    GitReceivePackSpecCommandArg,
     GitUploadPackSpecCommandArg
 } = require('./git-spec')
+const {
+    GMOpsUserInfoSpecCommandArg
+} = require('./gmops-spec')
 
 /**
  *
@@ -22,8 +20,18 @@ function buildSpecCommandArg (command = [], ctx) {
         return new SpecCommandArg()
     }
     switch (command[0]) {
-    case 'git-upload-pack':
-        return new GitUploadPackSpecCommandArg(command, ctx)
+        case 'git':
+            switch (command[1]) {
+                case 'upload-pack':
+                    return new GitUploadPackSpecCommandArg(command.slice(2), ctx)
+                case 'receive-pack':
+                    return new GitReceivePackSpecCommandArg(command.slice(2), ctx)
+            }
+        case 'gmops':
+            switch (command[1]) {
+                case 'user-info':
+                    return new GMOpsUserInfoSpecCommandArg(command.slice(2), ctx)
+            }
     }
     return new SpecCommandArg()
 }

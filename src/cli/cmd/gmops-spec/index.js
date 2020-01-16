@@ -1,3 +1,4 @@
 module.exports = {
-    ...require('./add-authorized')
+    ...require('./add-authorized'),
+    ...require('./user-info')
 }

@@ -1,3 +1,4 @@
+const { Curl } = require('node-libcurl')
 const { queue } = require('../queue')
 const log4js = require('log4js')
 
@@ -16,7 +17,9 @@ function applyAuthorizedKey (id) {
 }
 
 function fastCancelAuthorizedKey (id) {
-    curl.setOpt(Curl.option.URL, '127,0.0.1/authorized-key/' + id + '/cancel/fast')
+    const curl = new Curl()
+
+    curl.setOpt(Curl.option.URL, './authorized-key/' + id + '/cancel/fast')
     curl.setOpt(Curl.option.HTTPPOST, [])
     curl.setOpt(Curl.option.UNIX_SOCKET_PATH, '/var/run/gmops.sock')
 

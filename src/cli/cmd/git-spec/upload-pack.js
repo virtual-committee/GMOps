@@ -6,7 +6,7 @@ const {
 
 class GitUploadPackSpecCommandArg extends SpecCommandArg {
     constructor (args = [], ctx) {
-        super(SSH_COMMAND_TYPE_GIT_UPLOAD_PACK, args.slice(1), false, ctx)
+        super(SSH_COMMAND_TYPE_GIT_UPLOAD_PACK, args, false, ctx)
     }
 
     valid () {

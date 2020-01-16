@@ -4,16 +4,13 @@ const {
 } = require('../type')
 
 
-class GitReceiveSpecCommandArg extends SpecCommandArg {
+class GitReceivePackSpecCommandArg extends SpecCommandArg {
     constructor (args = [], ctx) {
         super(SSH_COMMAND_TYPE_GIT_RECEIVE_PACK, args, false, ctx)
     }
 
     valid () {
-        if (this.args.length !== 1) {
-            return false
-        }
-        return true
+        return this.args.length === 1
     }
 
     exec () {
@@ -22,5 +19,5 @@ class GitReceiveSpecCommandArg extends SpecCommandArg {
 }
 
 module.exports = {
-    GitReceiveSpecCommandArg
+    GitReceivePackSpecCommandArg
 }

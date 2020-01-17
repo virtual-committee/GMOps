@@ -8,3 +8,4 @@ RUN scripts/install.sh
 EXPOSE 8080
 EXPOSE 9022
 
+CMD ["scripts/start.sh"]

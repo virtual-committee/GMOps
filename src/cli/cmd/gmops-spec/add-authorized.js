@@ -34,7 +34,7 @@ class GMOpsAddAuthorizedSpecCommandArg extends SpecCommandArg {
             if (err) {
                 return console.error(err)
             }
-            fs.writeSync(fd, 'command="GWOPS_ADDR='
+            fs.writeSync(fd, 'command="GWOPS_HOST='
                          + addr
                          + ' GWOPS_PORT='
                          + port

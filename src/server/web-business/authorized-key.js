@@ -21,7 +21,7 @@ function fastCancelAuthorizedKey (id) {
 
     curl.setOpt(Curl.option.URL, './authorized-key/' + id + '/cancel/fast')
     curl.setOpt(Curl.option.HTTPPOST, [])
-    curl.setOpt(Curl.option.UNIX_SOCKET_PATH, '/var/run/gmops.sock')
+    curl.setOpt(Curl.option.UNIX_SOCKET_PATH, require('../../../config/global.json').unix_socket)
 
     curl.on('end', function (statusCode, data, headers) {
         if (statusCode === 202) {

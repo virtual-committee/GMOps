@@ -43,7 +43,7 @@ mongoose.connect(`mongodb://${mongoConfig.host}:${mongoConfig.port}/${mongoConfi
         logger.error(`GMOps API server cannnot connected MongoDB, reason: ${err}`)
         return
     }
-    const apiUDS = '/var/run/gmops.sock'
+    const apiUDS = require('../../config/global.json').unix_socket
     fs.exists(apiUDS, (exists) => {
         if (exists) {
             fs.unlinkSync(apiUDS)

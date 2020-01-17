@@ -19,14 +19,13 @@ class GMOpsUserInfoSpecCommandArg extends SpecCommandArg {
 
     exec () {
         (async () => {
-            const ret = await authorize(this.ctx.args[1].replace(/^'/, '').replace(/'$/, ''), this.ctx.args[2].replace(/^'/, '').replace(/'$/, ''))
-            if (!ret) {
+            if (!await authorize(this.ctx)) {
                 process.exit(1)
             }
             const curl = new Curl()
 
             curl.setOpt(Curl.option.URL, './user/info')
-            curl.setOpt(Curl.option.UNIX_SOCKET_PATH, '/var/run/gmops.sock')
+            curl.setOpt(Curl.option.UNIX_SOCKET_PATH, require('../../../../config/global.json').unix_socket)
             curl.setOpt(Curl.option.HTTPHEADER, ['GMOps-Username: ' + this.ctx.args[1].replace(/^'/, '').replace(/'$/, '')])
             curl.on('end', function (statusCode, data, headers) {
                 data = JSON.parse(data)

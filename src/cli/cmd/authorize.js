@@ -7,12 +7,14 @@ const { Curl } = require('node-libcurl')
  * @param {String} keyID 公钥ID
  *
  */
-function authorize (username, keyID) {
+function authorize (ctx) {
+    const username = ctx.args[1].replace(/^'/, '').replace(/'$/, '')
+    const keyID = ctx.args[2].replace(/^'/, '').replace(/'$/, '')
     const promise = new Promise(function (resolve, reject) {
         const curl = new Curl()
 
         curl.setOpt(Curl.option.URL, 'localhost/user/info')
-        curl.setOpt(Curl.option.UNIX_SOCKET_PATH, '/var/run/gmops.sock')
+        curl.setOpt(Curl.option.UNIX_SOCKET_PATH, require('../../../config/global.json').unix_socket)
         curl.setOpt(Curl.option.HTTPHEADER, ['GMOps-Username: ' + username])
         curl.on('end', function (statusCode, data, headers) {
             let result = false

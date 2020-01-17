@@ -2,6 +2,7 @@ const {
     SSH_COMMAND_TYPE_GIT_UPLOAD_PACK,
     SpecCommandArg
 } = require('../type')
+const kexec = require('kexec')
 
 
 class GitUploadPackSpecCommandArg extends SpecCommandArg {
@@ -14,7 +15,13 @@ class GitUploadPackSpecCommandArg extends SpecCommandArg {
     }
 
     exec () {
-        require('kexec')('git', [ 'upload-pack' ].concat(this.args))
+        (async () => {
+            if (!await authorize(this.ctx)) {
+                process.exit(1)
+            }
+
+            kexec('git', [ 'upload-pack' ].concat(this.args))
+        })()
     }
 }
 

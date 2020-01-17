@@ -16,7 +16,7 @@ function applyAuthorizedKeyTask ({ id }, cb) {
 
     curl.setOpt(Curl.option.URL, '127,0.0.1/authorized-key/' + id + '/apply')
     curl.setOpt(Curl.option.HTTPPOST, [])
-    curl.setOpt(Curl.option.UNIX_SOCKET_PATH, '/var/run/gmops.sock')
+    curl.setOpt(Curl.option.UNIX_SOCKET_PATH, require('../../../config/global.json').unix_socket)
 
     curl.on('end', function (statusCode, data, headers) {
         if (statusCode === 201) {
@@ -54,7 +54,7 @@ function cancelAuthorizedKeyTask ({ id }, cb) {
 
     curl.setOpt(Curl.option.URL, '127,0.0.1/authorized-key/' + id + '/cancel')
     curl.setOpt(Curl.option.HTTPPOST, [])
-    curl.setOpt(Curl.option.UNIX_SOCKET_PATH, '/var/run/gmops.sock')
+    //curl.setOpt(Curl.option.UNIX_SOCKET_PATH, require('../../../config/global.json').unix_socket)
 
     curl.on('end', function (statusCode, data, headers) {
         if (statusCode === 202) {

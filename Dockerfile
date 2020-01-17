@@ -1,4 +1,10 @@
-FROM node:alpine
+FROM centos:latest
 
-ADD . /opt/GMOps
-RUN npm install
+ADD ./ /opt/GMOps
+WORKDIR /opt/GMOps
+
+RUN scripts/install.sh
+
+EXPOSE 8080
+EXPOSE 9022
+

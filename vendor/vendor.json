@@ -9,6 +9,32 @@
 			"revisionTime": "2019-11-24T02:25:21Z",
 			"version": "v1.5.0",
 			"versionExact": "v1.5.0"
+		},
+		{
+			"checksumSHA1": "Aulh7C5SVOA4Jzt5eHNH6197Mbk=",
+			"path": "github.com/konsorten/go-windows-terminal-sequences",
+			"revision": "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e",
+			"revisionTime": "2019-02-26T22:47:05Z"
+		},
+		{
+			"checksumSHA1": "NDxUiOsT37uVF2nDTCJX03ad0os=",
+			"path": "github.com/mongodb/mongo-go-driver/mongo",
+			"revision": "afd796b6135cb135a7aebc65dcb31610c5a922ef",
+			"revisionTime": "2020-01-15T20:35:50Z"
+		},
+		{
+			"checksumSHA1": "a+HW4KfxlTA1ExAUrW8w6EKYoxM=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "67a7fdcf741f4d5cee82cb9800994ccfd4393ad0",
+			"revisionTime": "2019-10-26T11:39:18Z"
+		},
+		{
+			"path": "go.mongodb.org/mongo-driver/mongo",
+			"revision": ""
+		},
+		{
+			"path": "golang.org/x/sys/unix",
+			"revision": ""
 		}
 	],
 	"rootPath": "GMOps"

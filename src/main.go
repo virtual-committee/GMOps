@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"os"
 	"runtime"
 
@@ -16,6 +17,9 @@ func main() {
 
 	opt := options.NewServerOption()
 	opt.Add(pflag.CommandLine)
+
+	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	pflag.Parse()
 
 	ctx, cancel := context.WithCancel(context.Background())
 

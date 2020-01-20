@@ -10,24 +10,25 @@ import (
 )
 
 type createUserMsg struct {
-	name     string `form:"name"`
-	password string `form:"password"`
+	Name     string `form:"name"`
+	Password string `form:"password"`
 }
 
 type validUserMsg struct {
-	password string `form:"password"`
+	Password string `form:"password"`
 }
 
 func (s *Service) createUserAction(c *gin.Context) {
 	req := createUserMsg{}
 	if err := c.ShouldBind(&req); err != nil {
+		s.logger.Error("BI Service createUserAction bind req failed: ", err)
 		c.ProtoBuf(http.StatusBadRequest, &proto.Error{
 			ErrorCode: 400,
 			Reason:    "req body cannot bind",
 		})
 		return
 	}
-	if len(req.name) == 0 || len(req.password) == 0 {
+	if len(req.Name) == 0 || len(req.Password) == 0 {
 		c.ProtoBuf(http.StatusBadRequest, &proto.Error{
 			ErrorCode: 400,
 			Reason:    "missing fields",
@@ -35,7 +36,7 @@ func (s *Service) createUserAction(c *gin.Context) {
 		return
 	}
 
-	existed, err := s.lgc.ExistsUser(req.name)
+	existed, err := s.lgc.ExistsUser(req.Name)
 	if err != nil {
 		c.ProtoBuf(http.StatusInternalServerError, &proto.Error{
 			ErrorCode: 500,
@@ -51,7 +52,7 @@ func (s *Service) createUserAction(c *gin.Context) {
 		return
 	}
 
-	createdId, err := s.lgc.CreateUser(req.name, req.password)
+	createdId, err := s.lgc.CreateUser(req.Name, req.Password)
 	if err != nil {
 		c.ProtoBuf(http.StatusInternalServerError, &proto.Error{
 			ErrorCode: 500,
@@ -77,6 +78,13 @@ func (s *Service) validUserAction(c *gin.Context) {
 		c.ProtoBuf(http.StatusBadRequest, &proto.Error{
 			ErrorCode: 400,
 			Reason:    "req body cannot bind",
+		})
+		return
+	}
+	if len(req.Password) != 0 && req.Password != user.Password {
+		c.ProtoBuf(http.StatusBadRequest, &proto.Error{
+			ErrorCode: 400,
+			Reason:    "password wrong",
 		})
 		return
 	}

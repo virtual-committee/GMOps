@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto;
+
+message AuthKey
+{
+    string  Id          = 1;
+    string  Title       = 2;
+    string  Key         = 3;
+    bool    Available   = 4;
+}
+
+message UserAuthKeys
+{
+    string      UserId          = 1;
+    repeated    AuthKey Keys    = 2;
+}

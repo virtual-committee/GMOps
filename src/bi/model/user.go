@@ -48,7 +48,7 @@ func LoadUser(username string, db *mongo.Database, logger *log.Logger) (*User, e
 func ExistUser(username string, db *mongo.Database, logger *log.Logger) (bool, error) {
 	count, err := db.Collection(GMOPS_COLLECTION_USER).CountDocuments(context.TODO(), bson.D{{"username", username}})
 	if err != nil {
-		logger.Error("BI Server cannot got count documents: ", err)
+		logger.Error("BI Server cannot got User count documents: ", err)
 		return false, err
 	}
 	return count == 1, nil
@@ -57,7 +57,7 @@ func ExistUser(username string, db *mongo.Database, logger *log.Logger) (bool, e
 func (u *User) Save(db *mongo.Database, logger *log.Logger) error {
 	ret, err := db.Collection(GMOPS_COLLECTION_USER).InsertOne(context.TODO(), u)
 	if err != nil {
-		logger.Error("BI Server user cannot save: ", err)
+		logger.Error("BI Server User cannot save: ", err)
 		return err
 	}
 	logger.Info("BI Server user inserted: ", ret)

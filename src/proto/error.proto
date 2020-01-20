@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package proto;
+
+message Error
+{
+    uint32 ErrorCode   = 1;
+    string Reason      = 2;
+}

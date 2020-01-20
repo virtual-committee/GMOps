@@ -70,6 +70,8 @@ func NewService(ctx context.Context, cancel context.CancelFunc, unixSocketPath s
 		return nil, err
 	}
 
+	s.initRoute()
+
 	return s, nil
 }
 

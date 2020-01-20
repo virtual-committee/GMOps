@@ -4,13 +4,14 @@ import (
 	"context"
 
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/x/bsonx"
 )
 
 type User struct {
-	Id        string `bson:"_id"`
+	Id        primitive.ObjectID `bson:"_id"`
 	Username  string
 	Password  string
 	Available bool
@@ -27,5 +28,19 @@ func createUserIndex(db *mongo.Database, logger *log.Logger) error {
 		return err
 	}
 	logger.Info("BI Server success created User index: ", ret)
+	return nil
+}
+
+func NewUser() *User {
+	return &User{Id: primitive.NewObjectID()}
+}
+
+func (u *User) Save(db *mongo.Database, logger *log.Logger) error {
+	ret, err := db.Collection(GMOPS_COLLECTION_USER).InsertOne(context.TODO(), u)
+	if err != nil {
+		logger.Error("BI Server user cannot save: ", err)
+		return err
+	}
+	logger.Info("BI Server user inserted: ", ret)
 	return nil
 }

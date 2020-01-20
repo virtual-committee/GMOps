@@ -9,19 +9,31 @@ import (
 	bi "GMOps/src/bi/service"
 )
 
-func Run(ctx context.Context, cancel context.CancelFunc, opt *options.ServerOption) error {
+func Run(opt *options.ServerOption) error {
 	if !opt.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	biServer, err := bi.NewService(ctx, cancel, opt.BIAddrPath, opt.MongoConnector)
+	ctx, cancel := context.WithCancel(context.Background())
+
+	biServer, err := bi.NewService(ctx, cancel, opt.BIAddrPath, opt.MongoConnector, opt.DBName)
 	if err != nil {
 		return err
 	}
-	biServer.Run()
 
-	select {
-	case <-ctx.Done():
+	if opt.InitDB {
+		if err = biServer.InitDB(); err != nil {
+			return err
+		}
+	} else {
+		if err = biServer.Run(); err != nil {
+			return err
+		}
+
+		select {
+		case <-ctx.Done():
+		}
 	}
+
 	return nil
 }

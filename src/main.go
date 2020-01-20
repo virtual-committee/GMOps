@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"os"
 	"runtime"
@@ -21,9 +20,7 @@ func main() {
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 
-	ctx, cancel := context.WithCancel(context.Background())
-
-	if err := app.Run(ctx, cancel, opt); err != nil {
+	if err := app.Run(opt); err != nil {
 		os.Exit(1)
 	}
 }

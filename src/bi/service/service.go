@@ -5,6 +5,8 @@ import (
 	"os"
 	"time"
 
+	"GMOps/src/bi/model"
+
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,8 +14,10 @@ import (
 )
 
 type Service struct {
-	r              *gin.Engine
-	unixSocketPath string
+	r                    *gin.Engine
+	unixSocketPath       string
+	dbName               string
+	modelIndexesCreators map[string]func(db *mongo.Database, logger *log.Logger) error
 
 	MongoClient *mongo.Client
 	Ctx         context.Context
@@ -33,10 +37,11 @@ func (s *Service) initLogger() {
 	s.Logger = logger
 }
 
-func NewService(ctx context.Context, cancel context.CancelFunc, unixSocketPath string, mongoConnector string) (*Service, error) {
+func NewService(ctx context.Context, cancel context.CancelFunc, unixSocketPath string, mongoConnector string, dbName string) (*Service, error) {
 	s := &Service{
 		r:              gin.Default(),
 		unixSocketPath: unixSocketPath,
+		dbName:         dbName,
 		Ctx:            ctx,
 		Cancel:         cancel,
 	}
@@ -59,7 +64,22 @@ func NewService(ctx context.Context, cancel context.CancelFunc, unixSocketPath s
 	s.MongoClient = mongoClient
 	s.Logger.Info("Connected Mongo, connector: ", mongoConnector)
 
+	s.modelIndexesCreators = make(map[string]func(db *mongo.Database, logger *log.Logger) error)
+	if err = model.RegisterModelIndexes(&s.modelIndexesCreators); err != nil {
+		s.Logger.Error("BI Service cannot register model indexes creators")
+		return nil, err
+	}
+
 	return s, nil
+}
+
+func (s *Service) InitDB() error {
+	for _, f := range s.modelIndexesCreators {
+		if err := f(s.MongoClient.Database(s.dbName), s.Logger); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (s *Service) Run() error {

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -33,6 +34,24 @@ func createUserIndex(db *mongo.Database, logger *log.Logger) error {
 
 func NewUser() *User {
 	return &User{Id: primitive.NewObjectID()}
+}
+
+func LoadUser(username *string, db *mongo.Database, logger *log.Logger) (*User, error) {
+	ret := &User{}
+	if err := db.Collection(GMOPS_COLLECTION_USER).FindOne(context.TODO(), bson.D{{"username", *username}}).Decode(ret); err != nil {
+		logger.Error("BI Server cannot load user: ", err)
+		return nil, err
+	}
+	return ret, nil
+}
+
+func ExistUser(username string, db *mongo.Database, logger *log.Logger) (bool, error) {
+	count, err := db.Collection(GMOPS_COLLECTION_USER).CountDocuments(context.TODO(), bson.D{{"username", username}})
+	if err != nil {
+		logger.Error("BI Server cannot got count documents: ", err)
+		return false, err
+	}
+	return count == 1, nil
 }
 
 func (u *User) Save(db *mongo.Database, logger *log.Logger) error {

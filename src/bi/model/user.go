@@ -36,9 +36,9 @@ func NewUser() *User {
 	return &User{Id: primitive.NewObjectID()}
 }
 
-func LoadUser(username *string, db *mongo.Database, logger *log.Logger) (*User, error) {
+func LoadUser(username string, db *mongo.Database, logger *log.Logger) (*User, error) {
 	ret := &User{}
-	if err := db.Collection(GMOPS_COLLECTION_USER).FindOne(context.TODO(), bson.D{{"username", *username}}).Decode(ret); err != nil {
+	if err := db.Collection(GMOPS_COLLECTION_USER).FindOne(context.TODO(), bson.D{{"username", username}}).Decode(ret); err != nil {
 		logger.Error("BI Server cannot load user: ", err)
 		return nil, err
 	}

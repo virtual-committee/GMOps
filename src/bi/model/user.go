@@ -63,3 +63,17 @@ func (u *User) Save(db *mongo.Database, logger *log.Logger) error {
 	logger.Info("BI Server user inserted: ", ret)
 	return nil
 }
+
+func (u *User) Update(db *mongo.Database, logger *log.Logger) error {
+	update := bson.D{
+		{"$set", bson.D{
+			{"password", u.Password},
+			{"available", u.Available},
+		}},
+	}
+	if _, err := db.Collection(GMOPS_COLLECTION_USER).UpdateOne(context.TODO(), bson.D{{"_id", u.Id}}, update); err != nil {
+		logger.Error("BI Server User Update failed: ", err)
+		return err
+	}
+	return nil
+}

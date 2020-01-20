@@ -9,7 +9,7 @@ func (lgc *Logic) ExistsUser(name string) (bool, error) {
 }
 
 func (lgc *Logic) LoadUser(name string) (*model.User, error) {
-	return model.LoadUser(name, lgc.db, lgc.logger)
+	return model.LoadUserByUsername(name, lgc.db, lgc.logger)
 }
 
 func (lgc *Logic) CreateUser(name string, password string) (string, error) {

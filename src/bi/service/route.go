@@ -14,5 +14,11 @@ func (s *Service) initRoute() error {
 		}
 	}
 
+	keyRouter := s.r.Group("/key")
+	{
+		keyRouter.POST("/:id/apply", s.applyUserAuthKeyAction)
+		keyRouter.POST("/:id/cancel", s.cancelUserAuthKeyAction)
+	}
+
 	return nil
 }

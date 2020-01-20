@@ -112,3 +112,7 @@ func (k *UserAuthKey) Update(db *mongo.Database, logger *log.Logger) error {
 	}
 	return nil
 }
+
+func (k *UserAuthKey) GetUser(db *mongo.Database, logger *log.Logger) (*User, error) {
+	return LoadUserById(k.User, db, logger)
+}

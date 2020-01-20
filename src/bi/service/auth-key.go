@@ -127,3 +127,27 @@ func (s *Service) validUserAuthKeyAction(c *gin.Context) {
 	}
 	c.String(http.StatusOK, "pass")
 }
+
+func (s *Service) applyUserAuthKeyAction(c *gin.Context) {
+	id := c.Param("id")
+	if err := s.lgc.ApplyUserAuthKey(id); err != nil {
+		c.ProtoBuf(http.StatusInternalServerError, &proto.Error{
+			ErrorCode: 500,
+			Reason:    "server internal error",
+		})
+		return
+	}
+	c.String(http.StatusOK, "pass")
+}
+
+func (s *Service) cancelUserAuthKeyAction(c *gin.Context) {
+	id := c.Param("id")
+	if err := s.lgc.CancelUserAuthKey(id); err != nil {
+		c.ProtoBuf(http.StatusInternalServerError, &proto.Error{
+			ErrorCode: 500,
+			Reason:    "server internal error",
+		})
+		return
+	}
+	c.String(http.StatusOK, "pass")
+}

@@ -63,6 +63,7 @@ func LoadUserAuthKey(id string, db *mongo.Database, logger *log.Logger) (*UserAu
 func GetUserAuthKey(user *User, db *mongo.Database, logger *log.Logger) ([]*UserAuthKey, error) {
 	ret := make([]*UserAuthKey, 0)
 	cursor, err := db.Collection(GMOPS_COLLECTION_USER_AUTH_KEY).Find(context.TODO(), bson.D{{"user", user.Id}})
+	defer cursor.Close(context.TODO())
 	if err != nil {
 		logger.Error("BI Server GetUserAuthKey failed find UserAuthKey: ", err)
 		return nil, err

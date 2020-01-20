@@ -4,15 +4,17 @@ import (
 	"context"
 
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/x/bsonx"
 )
 
 type UserRepo struct {
-	Id   string `bson:"_id"`
-	User string
-	Repo string
+	Id   primitive.ObjectID `bson:"_id"`
+	User primitive.ObjectID
+	Repo primitive.ObjectID
 }
 
 func createUserRepoIndex(db *mongo.Database, logger *log.Logger) error {
@@ -30,4 +32,24 @@ func createUserRepoIndex(db *mongo.Database, logger *log.Logger) error {
 	}
 	logger.Info("BI Server success created UserRepo index: ", ret)
 	return nil
+}
+
+func LoadUserReposByUser(user *User, db *mongo.Database, logger *log.Logger) ([]*UserRepo, error) {
+	ret := make([]*UserRepo, 0)
+	cursor, err := db.Collection(GMOPS_COLLECTION_USER_REPO).Find(context.TODO(), bson.D{{"_id", user.Id}})
+	defer cursor.Close(context.TODO())
+	if err != nil {
+		logger.Error("BI Server LoadUserReposByUser failed find UserRepo: ", err)
+		return nil, err
+	}
+	for cursor.Next(context.TODO()) {
+		userRepo := &UserRepo{}
+		if err = cursor.Decode(&userRepo); err != nil {
+			logger.Error("BI Server LoadUserReposByUser failed decode: ", err)
+			return nil, err
+		}
+		ret = append(ret, userRepo)
+	}
+
+	return ret, nil
 }

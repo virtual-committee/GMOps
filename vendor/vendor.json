@@ -17,6 +17,12 @@
 			"revisionTime": "2019-02-26T22:47:05Z"
 		},
 		{
+			"checksumSHA1": "bZmCJ0+WqcJwfkz5u1oNI72bOAs=",
+			"path": "github.com/libgit2/git2go",
+			"revision": "ba1b5f0c23b33b25122cc42f2b8c6669fd08732b",
+			"revisionTime": "2019-12-10T22:41:38Z"
+		},
+		{
 			"checksumSHA1": "NDxUiOsT37uVF2nDTCJX03ad0os=",
 			"path": "github.com/mongodb/mongo-go-driver/mongo",
 			"revision": "afd796b6135cb135a7aebc65dcb31610c5a922ef",

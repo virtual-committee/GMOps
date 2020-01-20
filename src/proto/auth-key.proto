@@ -12,6 +12,6 @@ message AuthKey
 
 message UserAuthKeys
 {
-    string      UserId          = 1;
-    repeated    AuthKey Keys    = 2;
+    string              UserId  = 1;
+    repeated AuthKey    Keys    = 2;
 }

@@ -35,12 +35,6 @@
 		{
 			"path": "golang.org/x/sys/unix",
 			"revision": ""
-		},
-		{
-			"checksumSHA1": "Ws1ZR+8A8E4lgwbgFO29nChcRiw=",
-			"path": "gopkg.in/libgit2/git2go.v25",
-			"revision": "334260d743d713a55ff3c097ec6707f2bb39e9d5",
-			"revisionTime": "2017-01-20T13:46:32Z"
 		}
 	],
 	"rootPath": "GMOps"

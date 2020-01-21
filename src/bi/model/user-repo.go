@@ -40,7 +40,7 @@ func NewUserRepo() *UserRepo {
 
 func LoadUserReposByUser(user *User, db *mongo.Database, logger *log.Logger) ([]*UserRepo, error) {
 	ret := make([]*UserRepo, 0)
-	cursor, err := db.Collection(GMOPS_COLLECTION_USER_REPO).Find(context.TODO(), bson.D{{"_id", user.Id}})
+	cursor, err := db.Collection(GMOPS_COLLECTION_USER_REPO).Find(context.TODO(), bson.D{{"user", user.Id}})
 	defer cursor.Close(context.TODO())
 	if err != nil {
 		logger.Error("BI Server LoadUserReposByUser failed find UserRepo: ", err)

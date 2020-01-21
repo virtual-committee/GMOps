@@ -34,6 +34,10 @@ func createUserRepoIndex(db *mongo.Database, logger *log.Logger) error {
 	return nil
 }
 
+func NewUserRepo() *UserRepo {
+	return &UserRepo{Id: primitive.NewObjectID()}
+}
+
 func LoadUserReposByUser(user *User, db *mongo.Database, logger *log.Logger) ([]*UserRepo, error) {
 	ret := make([]*UserRepo, 0)
 	cursor, err := db.Collection(GMOPS_COLLECTION_USER_REPO).Find(context.TODO(), bson.D{{"_id", user.Id}})
@@ -52,4 +56,14 @@ func LoadUserReposByUser(user *User, db *mongo.Database, logger *log.Logger) ([]
 	}
 
 	return ret, nil
+}
+
+func (ur *UserRepo) Save(db *mongo.Database, logger *log.Logger) error {
+	ret, err := db.Collection(GMOPS_COLLECTION_USER_REPO).InsertOne(context.TODO(), ur)
+	if err != nil {
+		logger.Error("BI Server UserRepo cannot save: ", err)
+		return err
+	}
+	logger.Info("BI Server UserRepo inserted: ", ret)
+	return nil
 }

@@ -46,6 +46,41 @@ func (s *Service) getUserReposAction(c *gin.Context) {
 	c.ProtoBuf(http.StatusOK, ret)
 }
 
+func (s *Service) getUserRepoAction(c *gin.Context) {
+	user, ok := c.Keys["User"].(*model.User)
+	if !ok {
+		c.ProtoBuf(http.StatusUnauthorized, &proto.Error{
+			ErrorCode: 401,
+			Reason:    "Unauthorized",
+		})
+		return
+	}
+	repos, err := s.lgc.GetUserRepos(user)
+	if err != nil {
+		c.ProtoBuf(http.StatusInternalServerError, &proto.Error{
+			ErrorCode: 500,
+			Reason:    "server internal error",
+		})
+		return
+	}
+	name := c.Param("name")
+	for _, repo := range repos {
+		if repo.Name == name {
+			c.ProtoBuf(http.StatusOK, &proto.Repo{
+				Id:       repo.Id.Hex(),
+				Name:     repo.Name,
+				Descript: repo.Descript,
+				Attr:     repo.Attr,
+			})
+			return
+		}
+	}
+	c.ProtoBuf(http.StatusNotFound, &proto.Error{
+		ErrorCode: 404,
+		Reason:    "repo not exist",
+	})
+}
+
 func (s *Service) createUserRepoAction(c *gin.Context) {
 	user, ok := c.Keys["User"].(*model.User)
 	if !ok {

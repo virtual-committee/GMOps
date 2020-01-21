@@ -17,6 +17,12 @@
 			"revisionTime": "2019-02-26T22:47:05Z"
 		},
 		{
+			"checksumSHA1": "7N81S7JKadn4gbkuJnV6nhICNtc=",
+			"path": "github.com/mattn/go-shellwords",
+			"revision": "d25c5ef2e6394efb894d55a115dd35b34b2533f6",
+			"revisionTime": "2020-01-21T10:07:56Z"
+		},
+		{
 			"checksumSHA1": "NDxUiOsT37uVF2nDTCJX03ad0os=",
 			"path": "github.com/mongodb/mongo-go-driver/mongo",
 			"revision": "afd796b6135cb135a7aebc65dcb31610c5a922ef",
@@ -27,6 +33,12 @@
 			"path": "github.com/sirupsen/logrus",
 			"revision": "67a7fdcf741f4d5cee82cb9800994ccfd4393ad0",
 			"revisionTime": "2019-10-26T11:39:18Z"
+		},
+		{
+			"checksumSHA1": "BFzq6GIFtQgXJfhC2NEVM27ku44=",
+			"path": "github.com/tv42/httpunix",
+			"revision": "2ba4b9c3382c77e7b9ea89d00746e6111d142a22",
+			"revisionTime": "2019-12-20T19:13:45Z"
 		},
 		{
 			"path": "go.mongodb.org/mongo-driver/mongo",

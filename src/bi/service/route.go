@@ -12,6 +12,7 @@ func (s *Service) initRoute() error {
 			authorizedUserRouter.POST("/key", s.addUserAuthKeyAction)
 			authorizedUserRouter.GET("/key/:id/valid", s.validUserAuthKeyAction)
 			authorizedUserRouter.GET("/repos", s.getUserReposAction)
+			authorizedUserRouter.GET("/repo/:name", s.getUserRepoAction)
 			authorizedUserRouter.POST("/repo", s.createUserRepoAction)
 		}
 	}

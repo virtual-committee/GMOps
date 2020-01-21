@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
@@ -107,9 +108,14 @@ func (k *UserAuthKey) Update(db *mongo.Database, logger *log.Logger) error {
 			{"available", k.Available},
 		}},
 	}
-	if _, err := db.Collection(GMOPS_COLLECTION_USER).UpdateOne(context.TODO(), bson.D{{"_id", k.Id}}, update); err != nil {
+	result, err := db.Collection(GMOPS_COLLECTION_USER_AUTH_KEY).UpdateOne(context.TODO(), bson.D{{"_id", k.Id}}, update)
+	if err != nil {
 		logger.Error("BI Server User Update failed: ", err)
 		return err
+	}
+	if result.MatchedCount != 1 {
+		logger.Error("BI Server User Update failed: updated count ", result)
+		return fmt.Errorf("BI Server User Update failed: updated count ", result)
 	}
 	return nil
 }

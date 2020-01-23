@@ -3,7 +3,7 @@ package command
 import (
 	"fmt"
 
-	"GMOps/shell/command/spec"
+	"GMOps/src/shell/command/spec"
 )
 
 func buildGitOriginalSSHCommand(args []string) (spec.OriginalSSHCommand, error) {

@@ -1,2 +1,2 @@
-TARGET_NAME?=gmops-server
+TARGET_NAME?=gmops-shell
 include $(firstword $(subst :, ,${GOPATH}))/src/GMOps/scripts/Makefile

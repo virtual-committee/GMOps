@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"GMOps/shell/util"
 	gmopsProto "GMOps/src/proto"
+	"GMOps/src/shell/util"
 
 	"github.com/golang/protobuf/proto"
 )

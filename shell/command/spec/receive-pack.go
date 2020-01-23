@@ -6,18 +6,6 @@ import (
 	"os/exec"
 )
 
-const (
-	GIT_REPO_OWNER_I = 0o100
-	GIT_REPO_OWNER_O = 0o200
-	GIT_REPO_OWNER_X = 0o400
-	GIT_REPO_GROUP_I = 0o010
-	GIT_REPO_GROUP_O = 0o020
-	GIT_REPO_GROUP_X = 0o040
-	GIT_REPO_OTHER_I = 0o001
-	GIT_REPO_OTHER_O = 0o002
-	GIT_REPO_OTHER_X = 0x004
-)
-
 type GitReceivePack struct {
 	repo   Repo
 	user   string
@@ -34,9 +22,7 @@ func NewGitReceivePack(originalRepoName string) *GitReceivePack {
 
 func (g *GitReceivePack) RequiredUser() bool { return true }
 
-func (g *GitReceivePack) SetUser(user string) {
-	g.user = user
-}
+func (g *GitReceivePack) SetUser(user string) { g.user = user }
 
 func (g *GitReceivePack) SetReadWriter(stdin io.Reader, stdout, stderr io.Writer) {
 	g.stdin = stdin
@@ -48,9 +34,9 @@ func (g *GitReceivePack) Exec() error {
 	if err := g.repo.Parse(); err != nil {
 		return err
 	}
-	if g.user == g.repo.user && g.repo.attr&GIT_REPO_OWNER_I == 0 {
+	if g.user == g.repo.user && g.repo.attr&GIT_REPO_OWNER_W == 0 {
 		return fmt.Errorf("permission denied")
-	} else if g.repo.attr&GIT_REPO_OTHER_I == 0 {
+	} else if g.repo.attr&GIT_REPO_OTHER_W == 0 {
 		return fmt.Errorf("permission denied")
 	}
 
@@ -60,7 +46,6 @@ func (g *GitReceivePack) Exec() error {
 	cmd.Stderr = g.stderr
 
 	if err := cmd.Run(); err != nil {
-		fmt.Println(cmd.Args)
 		return err
 	}
 

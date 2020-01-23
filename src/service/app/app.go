@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"GMOps/src/app/options"
-	bi "GMOps/src/bi/service"
+	"GMOps/src/service/app/options"
+	bi "GMOps/src/service/bi/service"
 )
 
 func Run(opt *options.ServerOption) error {

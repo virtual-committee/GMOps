@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"GMOps/src/bi/logic"
-	"GMOps/src/bi/model"
+	"GMOps/src/service/bi/logic"
+	"GMOps/src/service/bi/model"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"

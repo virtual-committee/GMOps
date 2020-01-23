@@ -16,6 +16,11 @@ func buildGitOriginalSSHCommand(args []string) (spec.OriginalSSHCommand, error) 
 			return nil, fmt.Errorf("invalid command")
 		}
 		return spec.NewGitReceivePack(args[1]), nil
+	case "upload-pack":
+		if len(args) != 2 {
+			return nil, fmt.Errorf("invalid command")
+		}
+		return spec.NewGitUploadPack(args[1]), nil
 	}
 	return &spec.MissedHit{}, nil
 }

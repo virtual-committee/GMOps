@@ -1,6 +1,0 @@
-{
-    "ssh_port": 9022,
-    "web_port": 8080,
-    "repos_base": "/repos",
-    "unix_socket": "/opt/GMOps/gmops.sock"
-}

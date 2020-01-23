@@ -3,8 +3,8 @@ package service
 import (
 	"net/http"
 
-	"GMOps/src/bi/model"
 	"GMOps/src/proto"
+	"GMOps/src/service/bi/model"
 
 	"github.com/gin-gonic/gin"
 )

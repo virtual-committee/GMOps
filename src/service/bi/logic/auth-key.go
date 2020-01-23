@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"GMOps/src/bi/model"
-	"GMOps/src/util"
+	"GMOps/src/service/bi/model"
+	"GMOps/src/service/util"
 )
 
 var GMOPS_HOST_AUTHORIZED_KEYS string = os.Getenv("HOME") + "/.ssh/host_authorized_keys"

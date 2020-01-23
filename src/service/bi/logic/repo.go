@@ -3,7 +3,7 @@ package logic
 import (
 	"fmt"
 
-	"GMOps/src/bi/model"
+	"GMOps/src/service/bi/model"
 
 	git "github.com/libgit2/git2go"
 )

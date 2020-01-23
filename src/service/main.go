@@ -5,10 +5,10 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/spf13/pflag"
+	"GMOps/src/service/app"
+	"GMOps/src/service/app/options"
 
-	"GMOps/src/app"
-	"GMOps/src/app/options"
+	"github.com/spf13/pflag"
 )
 
 func main() {

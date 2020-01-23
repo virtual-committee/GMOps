@@ -1,7 +1,7 @@
 package logic
 
 import (
-	"GMOps/src/bi/model"
+	"GMOps/src/service/bi/model"
 )
 
 func (lgc *Logic) ExistsUser(name string) (bool, error) {

@@ -13,15 +13,10 @@ type Repo struct {
 	Id       primitive.ObjectID `bson:"_id"`
 	Name     string
 	Descript string
-	Attr     uint32
 }
 
 func NewRepo() *Repo {
-	repo := &Repo{
-		Id:   primitive.NewObjectID(),
-		Attr: 0o755,
-	}
-	return repo
+	return &Repo{Id: primitive.NewObjectID()}
 }
 
 func LoadRepoById(id primitive.ObjectID, db *mongo.Database, logger *log.Logger) (*Repo, error) {

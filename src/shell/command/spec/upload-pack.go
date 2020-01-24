@@ -1,7 +1,6 @@
 package spec
 
 import (
-	"fmt"
 	"io"
 	"os/exec"
 )
@@ -33,11 +32,6 @@ func (g *GitUploadPack) SetReadWriter(stdin io.Reader, stdout, stderr io.Writer)
 func (g *GitUploadPack) Exec() error {
 	if err := g.repo.Parse(); err != nil {
 		return err
-	}
-	if g.user == g.repo.user && g.repo.attr&GIT_REPO_OWNER_R == 0 {
-		return fmt.Errorf("permission denied")
-	} else if g.repo.attr&GIT_REPO_OTHER_R == 0 {
-		return fmt.Errorf("permission denied")
 	}
 
 	cmd := exec.Command("git", "upload-pack", GMOPS_REPO_DATA_PATH+g.repo.id)

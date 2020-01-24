@@ -14,7 +14,6 @@ import (
 
 type Repo struct {
 	id               string
-	attr             uint32
 	user             string
 	OriginalRepoName string
 }
@@ -57,7 +56,6 @@ func (r *Repo) tryPassUserFetchRepoId(user string, repo string) (bool, error) {
 	proto.Unmarshal(body, &resRepo)
 
 	r.id = resRepo.Id
-	r.attr = resRepo.Attr
 	r.user = user
 
 	return true, nil

@@ -7,7 +7,6 @@ message Repo
     string  Id          = 1;
     string  Name        = 2;
     string  Descript    = 3;
-    uint32  Attr        = 4;
 }
 
 message UserRepos

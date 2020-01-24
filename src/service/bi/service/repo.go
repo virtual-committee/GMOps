@@ -39,7 +39,6 @@ func (s *Service) getUserReposAction(c *gin.Context) {
 			Id:       repo.Id.Hex(),
 			Name:     repo.Name,
 			Descript: repo.Descript,
-			Attr:     repo.Attr,
 		})
 	}
 	ret.Repos = retRepos
@@ -70,7 +69,6 @@ func (s *Service) getUserRepoAction(c *gin.Context) {
 				Id:       repo.Id.Hex(),
 				Name:     repo.Name,
 				Descript: repo.Descript,
-				Attr:     repo.Attr,
 			})
 			return
 		}

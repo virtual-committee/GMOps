@@ -2,6 +2,7 @@ package spec
 
 import (
 	"io"
+	"os"
 	"os/exec"
 )
 
@@ -38,6 +39,7 @@ func (g *GitUploadPack) Exec() error {
 	cmd.Stdin = g.stdin
 	cmd.Stdout = g.stdout
 	cmd.Stderr = g.stderr
+	cmd.Env = append(os.Environ(), "GMOPS_USER="+g.user)
 
 	if err := cmd.Run(); err != nil {
 		return err

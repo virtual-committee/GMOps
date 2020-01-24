@@ -6,7 +6,7 @@ A system like GitOps
 ```
 mkdir -p /opt/GMOps/bin
 cp bin/gmops-proxy /opt/GMOps/bin
-chmod git:git -R /opt/GMOps
+chown git:git -R /opt/GMOps
 su git -c "ssh-keygen -t rsa -b 4096 -N \"\" -f /home/git/.ssh/id_rsa"
 podman run \
     -eGMOPS_MONGO=<mongo_ip> \

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"GMOps/src/shell/util"
+	"GMOps/src/util"
 )
 
 type Principal struct {

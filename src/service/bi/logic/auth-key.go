@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"GMOps/src/service/bi/model"
-	"GMOps/src/service/util"
+	"GMOps/src/util"
 )
 
 var GMOPS_HOST_AUTHORIZED_KEYS string = os.Getenv("HOME") + "/.ssh/host_authorized_keys"

@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"os"
 
 	"github.com/gin-gonic/gin"
 
@@ -30,7 +29,6 @@ func Run(opt *options.ServerOption) error {
 		if err = biServer.Run(); err != nil {
 			return err
 		}
-		os.SetEnv("GMOPS_BI_UNIX_SOCKET", opt.BIAddrPath)
 
 		select {
 		case <-ctx.Done():

@@ -3,6 +3,8 @@ FROM alpine:latest
 ADD /scripts/install.sh /install.sh
 ADD /scripts/start.sh /start.sh
 
+ENV GMOPS_BI_UNIX_SOCKET /opt/GMOps/gmops.sock
+
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
         && apk --no-cache add git libssh2 libgit2-dev openssh shadow \
         && ln -s /usr/lib/libgit2.so /usr/lib/libgit2.so.27 \

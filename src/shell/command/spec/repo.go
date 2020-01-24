@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	gmopsProto "GMOps/src/proto"
-	"GMOps/src/shell/util"
+	"GMOps/src/util"
 
 	"github.com/golang/protobuf/proto"
 )

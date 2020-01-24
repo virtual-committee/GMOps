@@ -26,5 +26,18 @@ chown -R git:git /home/git/.ssh
 chown -R git:git /opt/GMOps
 
 /usr/sbin/sshd -p 9022 -D &
+
+echo $GMOPS_BI_UNIX_SOCKET
+
 su git -c "chmod 700 /home/git/.ssh && chmod 600 /home/git/.ssh/authorized_keys"
-su git -c "/opt/GMOps/gmops-server --mongo=\"mongodb://${GMOPS_MONGO:-127.0.0.1}\""
+su git -c "/opt/GMOps/gmops-server \
+    --mongo=\"mongodb://${GMOPS_MONGO:-127.0.0.1}\" \
+    --dbname=\"${GMOPS_MONGO_DB:-gmops}\"
+    --initdb=true \
+    --debug=false"
+su git -c "/opt/GMOps/gmops-server \
+    --mongo=\"mongodb://${GMOPS_MONGO:-127.0.0.1}\" \
+    --bipath=\"${GMOPS_BI_UNIX_SOCKET:-/opt/GMOps/gmops.sock}\" \
+    --dbname=\"${GMOPS_MONGO_DB:-gmops}\"
+    --debug=false"
+

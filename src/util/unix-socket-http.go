@@ -15,10 +15,10 @@ func GetGMOpsClient() *http.Client {
 		ResponseHeaderTimeout: 1 * time.Second,
 	}
 	var unixSocketPath string
-	if os.GetEnv("GMOPS_BI_UNIX_SOCKET") == "" {
+	if os.Getenv("GMOPS_BI_UNIX_SOCKET") == "" {
 		unixSocketPath = "/var/run/gmops.sock"
 	} else {
-		unixSocketPath = os.GetEnv("GMOPS_BI_UNIX_SOCKET")
+		unixSocketPath = os.Getenv("GMOPS_BI_UNIX_SOCKET")
 	}
 	u.RegisterLocation("gmops", unixSocketPath)
 

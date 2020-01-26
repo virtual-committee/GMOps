@@ -23,7 +23,7 @@ type UserAuthKey struct {
 
 func createUserAuthKeyIndex(db *mongo.Database, logger *log.Logger) error {
 	idx := mongo.IndexModel{
-		Keys:    bsonx.Doc{{"authKey", bsonx.Int32(1)}},
+		Keys:    bsonx.Doc{{"authkey", bsonx.Int32(1)}},
 		Options: options.Index().SetUnique(true),
 	}
 	ret, err := db.Collection(GMOPS_COLLECTION_USER_AUTH_KEY).Indexes().CreateOne(context.Background(), idx)

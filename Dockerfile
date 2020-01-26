@@ -12,7 +12,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
         && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
         && ssh-keygen -A \
         && addgroup git \
-        && adduser -h /home/git -G git -D git \
+        && useradd -d /home/git -g git -p $RANDOM git \
         && sh /install.sh \
         && rm /install.sh
 

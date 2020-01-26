@@ -5,4 +5,4 @@ ssh \
     -p $GWOPS_PORT \
     -o StrictHostKeyChecking=no \
     git@$GWOPS_HOST \
-    "SSH_ORIGINAL_COMMAND=\"$SSH_ORIGINAL_COMMAND\" /opt/GMOps/bin/gmops-shell $@"
+    "SSH_ORIGINAL_COMMAND=\"$SSH_ORIGINAL_COMMAND\" /opt/GMOps/gmops-shell $@"

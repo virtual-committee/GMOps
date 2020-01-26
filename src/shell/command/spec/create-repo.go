@@ -1,8 +1,10 @@
 package spec
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -13,7 +15,7 @@ import (
 )
 
 type CreateRepo struct {
-	name string
+	Name string
 	user string
 
 	stdout io.Writer
@@ -21,7 +23,9 @@ type CreateRepo struct {
 }
 
 func (c *CreateRepo) Exec() error {
-	req, err := http.NewRequest("POST", "http+unix://gmops/user/repo", nil)
+	postJson := fmt.Sprintf("{\"name\": \"%s\", \"descript\":\"none\"}", c.Name)
+
+	req, err := http.NewRequest("POST", "http+unix://gmops/user/repo", bytes.NewBuffer([]byte(postJson)))
 	if err != nil {
 		return err
 	}
@@ -33,7 +37,7 @@ func (c *CreateRepo) Exec() error {
 		return err
 	}
 	if resp.StatusCode == 201 {
-		io.WriteString(c.stdout, fmt.Sprintf("repo: <%s> created", c.name))
+		io.WriteString(c.stdout, fmt.Sprintf("repo: <%s> created", c.Name))
 	} else {
 		errResp := gmopsProto.Error{}
 		body, err := ioutil.ReadAll(resp.Body)
@@ -44,6 +48,7 @@ func (c *CreateRepo) Exec() error {
 		io.WriteString(c.stderr, errResp.Reason)
 		os.Exit(1)
 	}
+	return nil
 }
 
 func (c *CreateRepo) SetReadWriter(_ io.Reader, stdout, stderr io.Writer) {

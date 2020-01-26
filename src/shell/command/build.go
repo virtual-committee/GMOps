@@ -34,8 +34,9 @@ func buildGMOpsOriginalSSHCommand(args []string) (spec.OriginalSSHCommand, error
 		if len(args) != 2 {
 			return nil, fmt.Errorf("invalid command")
 		}
-		return &spec.CreateRepo{name: args[1]}, nil
+		return &spec.CreateRepo{Name: args[1]}, nil
 	}
+	return &spec.MissedHit{}, nil
 }
 
 func BuildOriginalSSHCommand(args []string) (spec.OriginalSSHCommand, error) {

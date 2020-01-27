@@ -4,8 +4,8 @@ A system like GitOps
 # podman运行脚本
 
 ```
-mkdir -p /opt/GMOps/bin
-cp bin/gmops-proxy /opt/GMOps/bin
+mkdir -p /opt/GMOps
+cp bin/gmops-proxy /opt/GMOps/gmops-proxy
 chown git:git -R /opt/GMOps
 su git -c "ssh-keygen -t rsa -b 4096 -N \"\" -f /home/git/.ssh/id_rsa"
 podman run \
@@ -14,6 +14,7 @@ podman run \
     -eGMOPS_UID="$(id -u git)" \
     -v/home/git/.ssh/authorized_keys:/home/.ssh/host_authorized_keys \
     -v/home/git/.ssh/id_rsa.pub:/home/git/.ssh/authorized_keys \
+    -v/home/git/data/:/opt/GMOps/data/ \
     -d gmops:latest
 
 ```

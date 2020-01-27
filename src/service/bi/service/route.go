@@ -23,5 +23,16 @@ func (s *Service) initRoute() error {
 		keyRouter.POST("/:id/cancel", s.cancelUserAuthKeyAction)
 	}
 
+	repoRouter := s.r.Group("/repo")
+	{
+		repoRouter.GET("/:repoId/hook/pre-receive", s.getRepoPreReceiveHooksAction)
+		repoRouter.POST("/:repoId/hook/:hookId/apply", s.useRepoHookAction)
+	}
+
+	hookRouter := s.r.Group("/hook")
+	{
+		hookRouter.POST("/add", s.addGitHookAction)
+	}
+
 	return nil
 }

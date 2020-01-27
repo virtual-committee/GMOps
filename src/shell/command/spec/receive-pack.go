@@ -40,6 +40,7 @@ func (g *GitReceivePack) Exec() error {
 	cmd.Stdout = g.stdout
 	cmd.Stderr = g.stderr
 	cmd.Env = append(os.Environ(), "GMOPS_USER="+g.user)
+	cmd.Env = append(cmd.Env, "GMOPS_REPO_ID="+g.repo.id)
 
 	if err := cmd.Run(); err != nil {
 		return err

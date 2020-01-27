@@ -6,6 +6,8 @@ import (
 
 	"GMOps/src/service/bi/model"
 	"GMOps/src/util"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var GMOPS_HOST_AUTHORIZED_KEYS string = os.Getenv("HOME") + "/.ssh/host_authorized_keys"
@@ -28,17 +30,25 @@ func (lgc *Logic) AddUserAuthKey(user *model.User, title, key string) (string, e
 }
 
 func (lgc *Logic) GetUserAuthKeyByID(id string) (*model.UserAuthKey, error) {
-	return model.LoadUserAuthKey(id, lgc.db, lgc.logger)
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	return model.LoadUserAuthKey(oid, lgc.db, lgc.logger)
 }
 
 func (lgc *Logic) ApplyUserAuthKey(id string) error {
-	_, err := os.Stat(GMOPS_HOST_AUTHORIZED_KEYS)
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	_, err = os.Stat(GMOPS_HOST_AUTHORIZED_KEYS)
 	if err != nil {
 		lgc.logger.Error("BI Service ApplyUserAuthKey failed, os.Stat error: ", err)
 		return err
 	}
 
-	authKey, err := model.LoadUserAuthKey(id, lgc.db, lgc.logger)
+	authKey, err := model.LoadUserAuthKey(oid, lgc.db, lgc.logger)
 	if err != nil {
 		lgc.logger.Error("BI Service ApplyUserAuthKey failed, cannot LoadUserAuthKey: ", err)
 		return err
@@ -79,7 +89,11 @@ func (lgc *Logic) ApplyUserAuthKey(id string) error {
 }
 
 func (lgc *Logic) CancelUserAuthKey(id string) error {
-	authKey, err := model.LoadUserAuthKey(id, lgc.db, lgc.logger)
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	authKey, err := model.LoadUserAuthKey(oid, lgc.db, lgc.logger)
 	if err != nil {
 		lgc.logger.Error("BI Service CancelUserAuthKey failed, cannot LoadUserAuthKey: ", err)
 		return err

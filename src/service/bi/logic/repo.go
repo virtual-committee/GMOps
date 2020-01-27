@@ -2,10 +2,12 @@ package logic
 
 import (
 	"fmt"
+	"os"
 
 	"GMOps/src/service/bi/model"
 
 	git "github.com/libgit2/git2go"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const (
@@ -44,9 +46,14 @@ func (lgc *Logic) CreateUserRepo(user *model.User, name, descript string) (strin
 		return "", err
 	}
 
-	if _, err := git.InitRepository(fmt.Sprintf("%s%s", GMOPS_REPO_BASE_PATH, repo.Id.Hex()), true); err != nil {
+	realPath := fmt.Sprintf("%s%s", GMOPS_REPO_BASE_PATH, repo.Id.Hex())
+	if _, err := git.InitRepository(realPath, true); err != nil {
 		return "", err
 	}
+	if err := os.Symlink("/opt/GMOps/pre-receive", fmt.Sprintf("%s/hooks/pre-receive", realPath)); err != nil {
+		return repo.Id.Hex(), err
+	}
+
 	return repo.Id.Hex(), nil
 }
 
@@ -61,4 +68,12 @@ func (lgc *Logic) ExistUserRepo(user *model.User, name string) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func (lgc *Logic) GetRepo(id string) (*model.Repo, error) {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	return model.LoadRepoById(oid, lgc.db, lgc.logger)
 }

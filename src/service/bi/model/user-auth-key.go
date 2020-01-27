@@ -46,15 +46,9 @@ func NewUserAuthKey(user *User, title, key string) *UserAuthKey {
 	}
 }
 
-func LoadUserAuthKey(id string, db *mongo.Database, logger *log.Logger) (*UserAuthKey, error) {
-	oid, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		logger.Error("BI Server failed transfer Hex to ObjectID: ", err)
-		return nil, err
-	}
+func LoadUserAuthKey(id primitive.ObjectID, db *mongo.Database, logger *log.Logger) (*UserAuthKey, error) {
 	ret := &UserAuthKey{}
-	err = db.Collection(GMOPS_COLLECTION_USER_AUTH_KEY).FindOne(context.TODO(), bson.D{{"_id", oid}}).Decode(ret)
-	if err != nil {
+	if err := db.Collection(GMOPS_COLLECTION_USER_AUTH_KEY).FindOne(context.TODO(), bson.D{{"_id", id}}).Decode(ret); err != nil {
 		logger.Error("BI Server failed LoadUserAuthKey: ", err)
 		return nil, err
 	}

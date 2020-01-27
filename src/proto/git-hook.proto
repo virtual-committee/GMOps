@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package proto;
+
+message Hook {
+    string Id       = 1;
+    string Name     = 2;
+    string Source   = 3;
+}
+
+message Hooks {
+    string          Type    = 1;
+    repeated Hook   Hooks   = 2;
+}

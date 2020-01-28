@@ -22,6 +22,7 @@ require (
 	github.com/tv42/httpunix v0.0.0-20191220191345-2ba4b9c3382c
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v1.0.0 // indirect
+	github.com/yuin/gopher-lua v0.0.0-20191220021717-ab39c6098bdb
 	go.mongodb.org/mongo-driver v1.2.1
 	golang.org/x/crypto v0.0.0-20200117160349-530e935923ad // indirect
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect

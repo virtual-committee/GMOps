@@ -3,6 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
+			"path": "-vvv",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "D/4XtH5+t8LW5byy3/9S/GQOABA=",
 			"path": "github.com/gin-gonic/gin",
 			"revision": "15ced05c5316609bce5b43389f8e3f06102a8b18",
@@ -39,6 +43,30 @@
 			"path": "github.com/tv42/httpunix",
 			"revision": "2ba4b9c3382c77e7b9ea89d00746e6111d142a22",
 			"revisionTime": "2019-12-20T19:13:45Z"
+		},
+		{
+			"checksumSHA1": "QmAl79jXKvoXrAwbfGPzKwp3yyY=",
+			"path": "github.com/yuin/gopher-lua",
+			"revision": "ab39c6098bdba5b34ac9a025d375d4cf5bed4814",
+			"revisionTime": "2019-12-20T02:17:17Z"
+		},
+		{
+			"checksumSHA1": "yNGEI9BMDbGwabUnaHvV9ZZm/a0=",
+			"path": "github.com/yuin/gopher-lua/ast",
+			"revision": "ab39c6098bdba5b34ac9a025d375d4cf5bed4814",
+			"revisionTime": "2019-12-20T02:17:17Z"
+		},
+		{
+			"checksumSHA1": "Xqha1yOJYcd+Tka5voqYLQ6ykmc=",
+			"path": "github.com/yuin/gopher-lua/parse",
+			"revision": "ab39c6098bdba5b34ac9a025d375d4cf5bed4814",
+			"revisionTime": "2019-12-20T02:17:17Z"
+		},
+		{
+			"checksumSHA1": "mo237P0EzRWuGa/u9bnsFjUy1sw=",
+			"path": "github.com/yuin/gopher-lua/pm",
+			"revision": "ab39c6098bdba5b34ac9a025d375d4cf5bed4814",
+			"revisionTime": "2019-12-20T02:17:17Z"
 		},
 		{
 			"path": "go.mongodb.org/mongo-driver/mongo",

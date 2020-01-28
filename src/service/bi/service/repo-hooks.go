@@ -12,6 +12,7 @@ type createHookMsg struct {
 	Type   string `form:"type"`
 	Name   string `form:"name"`
 	Source string `form:"source"`
+	Spec   bool   `form:"spec"`
 }
 
 func (s *Service) getRepoPreReceiveHooksAction(c *gin.Context) {
@@ -106,7 +107,7 @@ func (s *Service) addGitHookAction(c *gin.Context) {
 		return
 	}
 
-	hookId, err := s.lgc.AddHook(req.Type, req.Name, req.Source)
+	hookId, err := s.lgc.AddHook(req.Type, req.Name, req.Source, req.Spec)
 	if err != nil {
 		c.ProtoBuf(http.StatusInternalServerError, &proto.Error{
 			ErrorCode: 500,

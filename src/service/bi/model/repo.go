@@ -11,6 +11,7 @@ import (
 
 type Repo struct {
 	Id       primitive.ObjectID `bson:"_id"`
+	Spec     bool
 	Name     string
 	Descript string
 }

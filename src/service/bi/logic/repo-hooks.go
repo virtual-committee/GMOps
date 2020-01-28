@@ -38,11 +38,12 @@ func (lgc *Logic) AddRepoHook(repo *model.Repo, hook *model.GitHook) (string, er
 	return repoHook.Id.Hex(), nil
 }
 
-func (lgc *Logic) AddHook(hookType string, name string, source string) (string, error) {
+func (lgc *Logic) AddHook(hookType string, name string, source string, spec bool) (string, error) {
 	hook := model.NewGitHook()
 	hook.Type = hookType
 	hook.Name = name
 	hook.LuaSource = source
+	hook.Spec = spec
 
 	if err := hook.Save(lgc.db, lgc.logger); err != nil {
 		return "", err

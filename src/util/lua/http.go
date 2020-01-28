@@ -1,23 +1,22 @@
-package util
+package luautil
 
 import (
 	"bytes"
 	"io/ioutil"
 	"net/http"
-	"os"
 
 	lua "github.com/yuin/gopher-lua"
 )
 
-func LuaRegisterHttpClientGlobal(l *lua.LState) {
+func luaRegisterHttpClientGlobal(l *lua.LState) {
 	meta := l.NewTable()
 	l.SetGlobal("http", meta)
 
-	l.SetField(meta, "req", l.NewFunction(newGMOpsHttpReq))
-	l.SetField(meta, "send", l.NewFunction(sendGMOpsHttpReq))
+	l.SetField(meta, "req", l.NewFunction(newHttpReq))
+	l.SetField(meta, "send", l.NewFunction(sendHttpReq))
 }
 
-func newGMOpsHttpReq(l *lua.LState) int {
+func newHttpReq(l *lua.LState) int {
 	c := l.NewTable()
 	method := lua.LString(l.CheckString(2))
 	url := lua.LString(l.CheckString(3))
@@ -31,7 +30,7 @@ func newGMOpsHttpReq(l *lua.LState) int {
 	return 1
 }
 
-func sendGMOpsHttpReq(l *lua.LState) int {
+func sendHttpReq(l *lua.LState) int {
 	self := l.CheckTable(2)
 
 	method := l.GetField(self, "method").(lua.LString)

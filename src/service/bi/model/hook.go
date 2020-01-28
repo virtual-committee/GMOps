@@ -11,6 +11,7 @@ import (
 
 type GitHook struct {
 	Id        primitive.ObjectID `bson:"_id"`
+	Spec      bool
 	Type      string
 	Name      string
 	LuaSource string

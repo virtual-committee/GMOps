@@ -14,3 +14,20 @@ message UserRepos
     string          UserId  = 1;
     repeated Repo   Repos   = 2;
 }
+
+message RepoRef
+{
+    string  TargetId    = 1;
+    bool    IsBranch    = 2;
+    bool    IsNote      = 3;
+    bool    IsRemote    = 4;
+    bool    IsTag       = 5;
+    string  Name        = 6;
+}
+
+message RepoRefs
+{
+    Repo                Repo    = 1;
+    repeated RepoRef    Refs    = 2;
+}
+

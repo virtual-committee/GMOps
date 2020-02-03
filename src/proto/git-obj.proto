@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package proto;
+
+message GitSignature
+{
+    string Name     = 1;
+    string Email    = 2;
+    string Time     = 3;
+}
+
+message GitCommit
+{
+    repeated string ParentId    = 1;
+    GitSignature    Author      = 2;
+    GitSignature    Committer   = 3;
+    string          Message     = 4;
+    string          TreeId      = 5;
+}

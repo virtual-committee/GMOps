@@ -7,4 +7,5 @@ import (
 func LuaRegisterGlobal(l *lua.LState) {
 	luaRegisterHttpClientGlobal(l)
 	luaRegisterGMOpsGlobal(l)
+	luaRegisterGitGlobal(l)
 }

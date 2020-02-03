@@ -6,14 +6,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (lgc *Logic) GetRepoPreReceiveHooks(repo *model.Repo) ([]*model.GitHook, error) {
+func (lgc *Logic) GetRepoHooks(repo *model.Repo, hookType string) ([]*model.GitHook, error) {
 	ret := make([]*model.GitHook, 0)
 	hooks, err := model.LoadGitHooksByRepoId(repo, lgc.db, lgc.logger)
 	if err != nil {
 		return nil, err
 	}
 	for _, hook := range hooks {
-		if hook.Type == "pre-receive" {
+		if hook.Type == hookType {
 			ret = append(ret, hook)
 		}
 	}

@@ -5,7 +5,7 @@ func (s *Service) initRoute() error {
 	userRouter := s.r.Group("/user")
 	{
 		userRouter.POST("/add", s.createUserAction)
-		authorizedUserRouter := userRouter.Use(s.authorize())
+		authorizedUserRouter := userRouter.Use(s.authorizeMiddleware())
 		{
 			authorizedUserRouter.GET("/valid", s.validUserAction)
 			authorizedUserRouter.GET("/keys", s.getUserAuthKeysAction)
@@ -23,10 +23,15 @@ func (s *Service) initRoute() error {
 		keyRouter.POST("/:id/cancel", s.cancelUserAuthKeyAction)
 	}
 
-	repoRouter := s.r.Group("/repo")
+	repoRouter := s.r.Group("/repo/:repoId").Use(s.repoMiddleware())
 	{
-		repoRouter.GET("/:repoId/hook/pre-receive", s.getRepoPreReceiveHooksAction)
-		repoRouter.POST("/:repoId/hook/:hookId/apply", s.useRepoHookAction)
+		repoRouter.GET("/hooks/:hookType", s.getRepoHooksAction)
+		repoRouter.POST("/hook/:hookId/apply", s.useRepoHookAction)
+		repoRouter.GET("/refs", s.getUserRepoRefsAction)
+	}
+	repoCommitRouter := s.r.Group("/repo/:repoId/commit/:commitId").Use(s.repoMiddleware()).Use(s.repoCommitMiddleware())
+	{
+		repoCommitRouter.GET("/info", s.getCommitInfoAction)
 	}
 
 	hookRouter := s.r.Group("/hook")

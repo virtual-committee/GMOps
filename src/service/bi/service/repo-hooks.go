@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"GMOps/src/proto"
+	"GMOps/src/service/bi/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,17 +16,17 @@ type createHookMsg struct {
 	Spec   bool   `form:"spec"`
 }
 
-func (s *Service) getRepoPreReceiveHooksAction(c *gin.Context) {
-	repoId := c.Param("repoId")
-	repo, err := s.lgc.GetRepo(repoId)
-	if err != nil {
+func (s *Service) getRepoHooksAction(c *gin.Context) {
+	hookType := c.Param("hookType")
+	repo, ok := c.Keys["Repo"].(*model.Repo)
+	if !ok {
 		c.ProtoBuf(http.StatusNotFound, &proto.Error{
 			ErrorCode: 404,
 			Reason:    "repo not exist",
 		})
 		return
 	}
-	hooks, err := s.lgc.GetRepoPreReceiveHooks(repo)
+	hooks, err := s.lgc.GetRepoHooks(repo, hookType)
 	if err != nil {
 		c.ProtoBuf(http.StatusInternalServerError, &proto.Error{
 			ErrorCode: 500,
@@ -34,7 +35,7 @@ func (s *Service) getRepoPreReceiveHooksAction(c *gin.Context) {
 		return
 	}
 	sources := make([]*proto.Hook, 0)
-	ret := &proto.Hooks{Type: "pre-receive"}
+	ret := &proto.Hooks{Type: hookType}
 	for _, hook := range hooks {
 		sources = append(sources, &proto.Hook{
 			Id:     hook.Id.Hex(),
@@ -49,11 +50,9 @@ func (s *Service) getRepoPreReceiveHooksAction(c *gin.Context) {
 }
 
 func (s *Service) useRepoHookAction(c *gin.Context) {
-	repoId := c.Param("repoId")
 	hookId := c.Param("hookId")
-
-	repo, err := s.lgc.GetRepo(repoId)
-	if err != nil {
+	repo, ok := c.Keys["Repo"].(*model.Repo)
+	if !ok {
 		c.ProtoBuf(http.StatusNotFound, &proto.Error{
 			ErrorCode: 404,
 			Reason:    "repo not exist",

@@ -53,6 +53,12 @@ func (lgc *Logic) CreateUserRepo(user *model.User, name, descript string) (strin
 	if err := os.Symlink("/opt/GMOps/pre-receive", fmt.Sprintf("%s/hooks/pre-receive", realPath)); err != nil {
 		return repo.Id.Hex(), err
 	}
+	if err := os.Symlink("/opt/GMOps/update", fmt.Sprintf("%s/hooks/update", realPath)); err != nil {
+		return repo.Id.Hex(), err
+	}
+	if err := os.Symlink("/opt/GMOps/post-receive", fmt.Sprintf("%s/hooks/post-receive", realPath)); err != nil {
+		return repo.Id.Hex(), err
+	}
 
 	return repo.Id.Hex(), nil
 }

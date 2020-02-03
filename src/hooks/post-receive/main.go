@@ -27,7 +27,7 @@ func main() {
 	if len(params)%3 != 0 {
 		os.Exit(1)
 	}
-	req, err := http.NewRequest("GET", "http+unix://gmops/repo/"+repoId+"/hook/pre-receive", nil)
+	req, err := http.NewRequest("GET", "http+unix://gmops/repo/"+repoId+"/hook/post-receive", nil)
 	if err != nil {
 		os.Exit(1)
 	}
@@ -66,7 +66,7 @@ func execLuaSource(hook *gmopsProto.Hook, params []string) bool {
 		luaParams.Append(luaParam)
 	}
 
-	fmt.Fprintln(os.Stderr, "<pre-receive hook> %s processing", hook.Name)
+	fmt.Fprintln(os.Stderr, "<post-receive hook> %s processing", hook.Name)
 	if err := l.DoString(hook.Source); err != nil {
 		fmt.Fprintln(os.Stderr, "lua source internal error (loading)")
 		os.Exit(1)
@@ -85,14 +85,14 @@ func execLuaSource(hook *gmopsProto.Hook, params []string) bool {
 
 	res, ok := ret.(lua.LBool)
 	if !ok {
-		fmt.Fprintln(os.Stderr, "<pre-receive hook> %s failed", hook.Name)
+		fmt.Fprintln(os.Stderr, "<post-receive hook> %s failed", hook.Name)
 		return false
 	}
 	if res {
-		fmt.Fprintln(os.Stderr, "<pre-receive hook> %s successed", hook.Name)
+		fmt.Fprintln(os.Stderr, "<post-receive hook> %s successed", hook.Name)
 		return true
 	} else {
-		fmt.Fprintln(os.Stderr, "<pre-receive hook> %s failed", hook.Name)
+		fmt.Fprintln(os.Stderr, "<post-receive hook> %s failed", hook.Name)
 		return false
 	}
 }

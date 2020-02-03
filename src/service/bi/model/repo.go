@@ -2,7 +2,9 @@ package model
 
 import (
 	"context"
+	"fmt"
 
+	git "github.com/libgit2/git2go"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -37,4 +39,14 @@ func (r *Repo) Save(db *mongo.Database, logger *log.Logger) error {
 	}
 	logger.Info("BI Server Repo inserted: ", ret)
 	return nil
+}
+
+func (r *Repo) OpenGitRepo(basePath string, logger *log.Logger) (*git.Repository, error) {
+	realPath := fmt.Sprintf("%s%s", basePath, r.Id.Hex())
+	gitRepo, err := git.OpenRepository(realPath)
+	if err != nil {
+		logger.Error("BI Server Repo open git repository error: ", err)
+		return nil, err
+	}
+	return gitRepo, nil
 }

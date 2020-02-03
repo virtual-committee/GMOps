@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"runtime"
-	"strings"
 
 	gmopsProto "GMOps/src/proto"
 	"GMOps/src/util"
@@ -19,15 +18,8 @@ import (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	input, _ := ioutil.ReadAll(os.Stdin)
-	params := strings.Fields(string(input))
-
 	repoId := os.Getenv("GMOPS_REPO_ID")
-
-	if len(params)%3 != 0 {
-		os.Exit(1)
-	}
-	req, err := http.NewRequest("GET", "http+unix://gmops/repo/"+repoId+"/hook/pre-receive", nil)
+	req, err := http.NewRequest("GET", "http+unix://gmops/repo/"+repoId+"/hook/update", nil)
 	if err != nil {
 		os.Exit(1)
 	}
@@ -42,31 +34,26 @@ func main() {
 	}
 	hooks := gmopsProto.Hooks{}
 	proto.Unmarshal(body, &hooks)
-
 	for _, hook := range hooks.Hooks {
-		if !execLuaSource(hook, params) {
+		if !execLuaSource(hook, os.Args[1], os.Args[2], os.Args[3]) {
 			os.Exit(1)
 		}
 	}
-
-	os.Exit(0)
 }
 
-func execLuaSource(hook *gmopsProto.Hook, params []string) bool {
+func execLuaSource(hook *gmopsProto.Hook, oldrev, newrev, refname string) bool {
 	l := lua.NewState()
 	defer l.Close()
 	gmopslua.LuaRegisterGlobal(l)
 
 	luaParams := l.NewTable()
-	for i := 0; i < len(params); i += 3 {
-		luaParam := l.NewTable()
-		l.SetField(luaParam, "oldrev", lua.LString(params[i]))
-		l.SetField(luaParam, "newrev", lua.LString(params[i+1]))
-		l.SetField(luaParam, "refname", lua.LString(params[i+2]))
-		luaParams.Append(luaParam)
-	}
+	luaParam := l.NewTable()
+	l.SetField(luaParam, "oldrev", lua.LString(oldrev))
+	l.SetField(luaParam, "newrev", lua.LString(newrev))
+	l.SetField(luaParam, "refname", lua.LString(refname))
+	luaParams.Append(luaParam)
 
-	fmt.Fprintln(os.Stderr, "<pre-receive hook> %s processing", hook.Name)
+	fmt.Fprintln(os.Stderr, "<update hook> %s processing", hook.Name)
 	if err := l.DoString(hook.Source); err != nil {
 		fmt.Fprintln(os.Stderr, "lua source internal error (loading)")
 		os.Exit(1)
@@ -85,14 +72,14 @@ func execLuaSource(hook *gmopsProto.Hook, params []string) bool {
 
 	res, ok := ret.(lua.LBool)
 	if !ok {
-		fmt.Fprintln(os.Stderr, "<pre-receive hook> %s failed", hook.Name)
+		fmt.Fprintln(os.Stderr, "<update hook> %s failed", hook.Name)
 		return false
 	}
 	if res {
-		fmt.Fprintln(os.Stderr, "<pre-receive hook> %s successed", hook.Name)
+		fmt.Fprintln(os.Stderr, "<update hook> %s successed", hook.Name)
 		return true
 	} else {
-		fmt.Fprintln(os.Stderr, "<pre-receive hook> %s failed", hook.Name)
+		fmt.Fprintln(os.Stderr, "<update hook> %s failed", hook.Name)
 		return false
 	}
 }

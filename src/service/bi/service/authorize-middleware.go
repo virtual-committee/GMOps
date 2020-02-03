@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Service) authorize() gin.HandlerFunc {
+func (s *Service) authorizeMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		username := c.GetHeader("GMOps-Username")
 		s.logger.Info("valid user authorized: ", username)
@@ -34,7 +34,10 @@ func (s *Service) authorize() gin.HandlerFunc {
 			})
 			return
 		}
-		c.Keys = map[string]interface{}{"User": user}
+		if c.Keys == nil {
+			c.Keys = make(map[string]interface{})
+		}
+		c.Keys["User"] = user
 		c.Next()
 	}
 }

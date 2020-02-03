@@ -17,3 +17,17 @@ message GitCommit
     string          Message     = 4;
     string          TreeId      = 5;
 }
+
+message GitTreeEntry
+{
+    string  Id          = 1;
+    string  Name        = 2;
+    string  Type        = 3;
+    int32   Filemode    = 4;
+}
+
+message GitTree
+{
+    string                  Id          = 1;
+    repeated GitTreeEntry   Entries     = 2;
+}

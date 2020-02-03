@@ -28,10 +28,8 @@ func (s *Service) initRoute() error {
 		repoRouter.GET("/hooks/:hookType", s.getRepoHooksAction)
 		repoRouter.POST("/hook/:hookId/apply", s.useRepoHookAction)
 		repoRouter.GET("/refs", s.getUserRepoRefsAction)
-	}
-	repoCommitRouter := s.r.Group("/repo/:repoId/commit/:commitId").Use(s.repoMiddleware()).Use(s.repoCommitMiddleware())
-	{
-		repoCommitRouter.GET("/info", s.getCommitInfoAction)
+		repoRouter.GET("/commit/:commitId", s.getCommitInfoAction)
+		repoRouter.GET("/tree/:treeId", s.getTreeInfoAction)
 	}
 
 	hookRouter := s.r.Group("/hook")
